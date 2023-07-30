@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Contact.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/23 16:16:29 by edoardo           #+#    #+#             */
-/*   Updated: 2023/07/24 06:26:38 by edoardo          ###   ########.fr       */
+/*   Created: 2023/07/23 18:31:13 by edoardo           #+#    #+#             */
+/*   Updated: 2023/07/24 06:41:02 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef CONTACT_HPP
+# define CONTACT_HPP
 
-#include <iostream>
-#include <string>
-#include "Phonebook.hpp"
+# include <iostream>
+# include <iomanip>
+# include <string>
+# include <iomanip>
 
 using namespace std;
 
-int main(void)
+class Contact
 {
-    string str = "NULL";
-    Phonebook phoneBook;
+	private:
+		string first_name;
+		string last_name;
+		string nickname;
+		string number;
+		string darkes_secret;
+	
+	public:
+		Contact();
+		void new_contact(string list[5]);
+		void show_field(void);
+		bool is_empty(void);
+		void print_search(void);
+};
 
-    while (str != "EXIT")
-    {
-        phoneBook.show_command();
-        cin >> str;
-        if (str == "ADD")
-            phoneBook.add_contact();
-        if (str == "SEARCH")
-            phoneBook.search_contact();
-    }
-    
-}
+#endif

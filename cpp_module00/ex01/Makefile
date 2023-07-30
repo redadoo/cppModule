@@ -6,7 +6,7 @@
 #    By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/23 16:12:59 by edoardo           #+#    #+#              #
-#    Updated: 2023/07/24 05:49:24 by edoardo          ###   ########.fr        #
+#    Updated: 2023/07/24 20:30:41 by edoardo          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,5 +32,8 @@ fclean:			clean
 				$(RM) $(NAME)
 
 re:				fclean $(NAME)
+
+exe: all
+	./$(NAME)
 
 .PHONY:			all clean fclean re

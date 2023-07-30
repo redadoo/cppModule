@@ -6,11 +6,26 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 18:40:20 by edoardo           #+#    #+#             */
-/*   Updated: 2023/07/24 06:27:29 by edoardo          ###   ########.fr       */
+/*   Updated: 2023/07/28 12:00:58 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Contact.hpp"
+
+static string Replace(string str)
+{
+    string s;
+    int i = 0;
+    if (str.length() < 10)
+        return str;
+    while (i < 8)
+    {
+        s += (str.at(i));
+        i++;
+    }
+    s.append(".");
+    return s;
+}
 
 Contact::Contact()
 {
@@ -36,4 +51,38 @@ void Contact::show_field(void)
     cout << this->last_name << endl;
     cout << this->nickname << endl;
     cout << this->darkes_secret << endl;
+}
+bool Contact::is_empty(void)
+{
+    if (this->first_name == "")
+        return (true);
+    return (false);
+}
+
+
+static string add_space(string str)
+{
+    while (str.length() < 9)
+    {
+        str.append(" ");
+    }
+    return str;
+}
+
+void Contact::print_search(void)
+{
+    string value;
+
+    value = this->first_name;
+    value = add_space(value);
+    value = Replace(value);
+    cout << value  << "|";
+    value = this->last_name;
+    value = add_space(value);
+    value = Replace(value);
+    cout <<  value << "|";
+    value = this->nickname;
+    value = add_space(value);
+    value = Replace(value);
+    cout <<  value << "|";
 }

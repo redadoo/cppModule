@@ -6,11 +6,20 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 18:40:17 by edoardo           #+#    #+#             */
-/*   Updated: 2023/07/24 06:26:03 by edoardo          ###   ########.fr       */
+/*   Updated: 2023/07/26 23:37:49 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Phonebook.hpp"
+
+static string add_space(string str)
+{
+    while (str.length() < 7)
+    {
+        str.append(" ");
+    }
+    return str;
+}
 
 Phonebook::Phonebook()
 {
@@ -43,8 +52,18 @@ void	Phonebook::search_contact(void)
 {
     int x;
 
-    cout << "index of contact\n";
-    cin >> x; 
-    if (x >= 0 && x <= 7)
-        this->contacts[x].show_field();
+    x = 0;
+    string str;
+    cout << "============================================\n";
+    cout << "| index |" "firstname|" "lastname |" "nickname |"  << endl;
+    while (this->contacts[x].is_empty() != true)
+    {
+        str = to_string(x);
+        str = add_space(str);
+        cout << "|" << str << "|";
+        this->contacts[x].print_search();
+        x++;
+        cout << endl;
+    }
+    cout << endl;
 }
