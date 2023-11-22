@@ -48,6 +48,11 @@
         "iomanip": "cpp",
         "sstream": "cpp",
         "locale": "cpp",
-        "ranges": "cpp"
-    }
+        "ranges": "cpp",
+        "chrono": "cpp",
+        "optional": "cpp",
+        "ratio": "cpp",
+        "fstream": "cpp"
+    },
+    "C_Cpp.default.compilerPath": "/usr/bin/clang-12"
 }
