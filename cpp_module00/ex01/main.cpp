@@ -1,37 +1,31 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/23 16:16:29 by edoardo           #+#    #+#             */
-/*   Updated: 2023/07/24 06:31:22 by edoardo          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-
+#include "PhoneBook.hpp"
 #include <iostream>
-#include <string>
-#include "Phonebook.hpp"
-
-using namespace std;
 
 int main(void)
 {
-    string str = "NULL";
-    Phonebook phoneBook;
+	std::string	command;
+	PhoneBook	phoneBook;
 
-    while (str != "EXIT")
-    {
-        phoneBook.show_command();
-        cin >> str;
-        if (str == "ADD")
-            phoneBook.add_contact();
-        if (str == "SEARCH")
-            phoneBook.search_contact();
-        if (str == "EXIT")
-            exit(1);
-    }
-    
+	std::cout << "write ADD or SEARCH or EXIT on terminal any other command will be ignored" << std::endl; 
+	while (true)
+	{
+		std::cin >> command;
+		if (command == "ADD")
+		{
+			Contact		contact;
+			contact.fillField();
+			phoneBook.Add(contact);
+		}
+		if (command == "SEARCH")
+		{
+			int	index;
+			std::cout << "insert contact index : " << std::endl;
+			std::cin >> index;
+			std::cout << std::endl;
+			phoneBook.Search(index);
+		}
+		if (command == "EXIT")
+			break ;
+	}
+	return 0;
 }

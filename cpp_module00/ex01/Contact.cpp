@@ -1,88 +1,39 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   Contact.cpp                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/07/23 18:40:20 by edoardo           #+#    #+#             */
-/*   Updated: 2023/07/28 12:00:58 by edoardo          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "Contact.hpp"
 
-static string Replace(string str)
+void    Contact::fillField()
 {
-    string s;
-    int i = 0;
-    if (str.length() < 10)
-        return str;
-    while (i < 8)
-    {
-        s += (str.at(i));
-        i++;
-    }
-    s.append(".");
-    return s;
+    std::cout << "first name :" << std::endl;
+    std::cin >> this->first_name;
+    std::cout << "last name :" << std::endl;
+    std::cin >> this->last_name;
+    std::cout << "nickname :" << std::endl;
+    std::cin >> this->nickname;
+    std::cout << "number :" << std::endl;
+    std::cin >> this->number;
+    std::cout << "darkest secret :" << std::endl;
+    std::cin >> this->darkest_secret;
+    std::cout << "you have created a new user in the phone book called " << this->first_name << std::endl;
 }
 
-Contact::Contact()
+std::string truncateString(const std::string& str) 
 {
-    this->first_name = "";
-    this->last_name = "";
-    this->nickname = "";
-    this->number = "";
-    this->darkes_secret = "";
-}
-
-void Contact::new_contact(string list[5])
-{
-    this->first_name = list[0];
-    this->last_name = list[1];
-    this->nickname = list[2];
-    this->number = list[3];
-    this->darkes_secret = list[4];
-}
-
-void Contact::show_field(void)
-{
-    cout << this->first_name << endl;
-    cout << this->last_name << endl;
-    cout << this->nickname << endl;
-    cout << this->darkes_secret << endl;
-}
-bool Contact::is_empty(void)
-{
-    if (this->first_name == "")
-        return (true);
-    return (false);
-}
-
-
-static string add_space(string str)
-{
-    while (str.length() < 9)
-    {
-        str.append(" ");
+    if (str.length() > 10) {
+        return str.substr(0, 9) + ".";
     }
     return str;
 }
 
-void Contact::print_search(void)
+void    Contact::displayField(size_t index)
 {
-    string value;
+    std::cout << std::setiosflags (std::ios_base::right);
 
-    value = this->first_name;
-    value = add_space(value);
-    value = Replace(value);
-    cout << value  << "|";
-    value = this->last_name;
-    value = add_space(value);
-    value = Replace(value);
-    cout <<  value << "|";
-    value = this->nickname;
-    value = add_space(value);
-    value = Replace(value);
-    cout <<  value << "|";
+    std::cout << "|"<< std::setw(10) << "INDEX" << "|" << std::setw(10) << index << "|"<< std::endl;
+    std::cout << "|"<< std::setw(10) << "FIRST NAME" << "|" << std::setw(10) << truncateString(this->first_name) << "|"<< std::endl;
+    std::cout << "|"<< std::setw(10) << "LAST NAME" << "|" << std::setw(10) << truncateString(this->last_name) << "|" << std::endl;
+    std::cout << "|"<< std::setw(10) << "NICKNAME" << std::setw(1) << "|" << std::setw(10) << truncateString(this->nickname) << "|" << std::endl;
+}
+
+bool    Contact::isEmpty()
+{
+    return (this->first_name.empty());
 }

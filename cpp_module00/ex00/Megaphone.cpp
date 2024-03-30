@@ -6,43 +6,29 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 15:48:09 by edoardo           #+#    #+#             */
-/*   Updated: 2023/07/28 12:00:55 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/02/20 12:05:41 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <iostream>
 #include <string>
-#include <locale>
 
-static char* StringToUpeer(char *str)
+std::string StringToUpper(char *str)
 {
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        str[i] = toupper(str[i]);
-        i++;;
-    }
-    return (str);
+	for (size_t i = 0; str[i] ; i++)
+		str[i] = toupper(str[i]);
+	return (str);
 }
 
 int main(int argc, char **argv) 
-{
-    int i;
-
-    i = 1;
-    if (argc == 1)
-        std::cout <<"* LOUD AND UNBEARABLE FEEDBACK NOISE *\n";
-    else
-    {
-        while (argv[i] != NULL)
-        {
-            std::string str(StringToUpeer(argv[i]));
-            std::cout << str;
-            i++;
-        }
-        std::cout <<"\n";
-    }
-    return 0;
+{	
+	if (argc <= 1)
+		std::cout << "* LOUD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;
+	else
+	{
+		for (int i = 1; i < argc; i++)
+			std::cout << StringToUpper(argv[i]);
+		std::cout << std::endl;
+	}
+	return 0;
 }
