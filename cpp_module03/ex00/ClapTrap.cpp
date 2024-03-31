@@ -12,6 +12,7 @@ void ClapTrap::attack(const std::string& target)
 		std::cout << this->name << " tries to attack "<< target <<" but has no energy "<< std::endl;
 	}
 }
+
 void ClapTrap::takeDamage(unsigned int amount)
 {
 	std::cout << this->name << " take damage  causing  lost "<< this->attackDamage << " hit point "<< std::endl;
@@ -39,15 +40,32 @@ const std::string ClapTrap::getName()
 {
 	return this->name;
 } 
+
 int ClapTrap::getAttackDamage()
 {
 	return this->attackDamage;
 }
+
 ClapTrap::ClapTrap(std::string _name) :name(_name) {
 	std::cout << "Initializate " << this->name << std::endl;
 	this->energyPoints = 10;
 	this->hitPoint = 10;
 	this->attackDamage = 0;
+}
+
+ClapTrap::ClapTrap(const ClapTrap &rhs)
+{
+    *this = rhs;
+    std::cout << "ClapTrap copy constructor called" << std::endl;
+    return;
+}
+
+ClapTrap&   ClapTrap::operator=( const ClapTrap& rhs ) {
+    this->name = rhs.name;
+    this->hitPoint = rhs.hitPoint;
+    this->energyPoints = rhs.energyPoints;
+    this->attackDamage = rhs.attackDamage;
+    return *this;
 }
 
 ClapTrap::~ClapTrap()

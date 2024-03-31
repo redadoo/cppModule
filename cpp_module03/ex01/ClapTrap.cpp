@@ -38,16 +38,33 @@ void ClapTrap:: beRepaired(unsigned int amount)
 const std::string ClapTrap::getName()
 {
 	return this->name;
-} 
+}
+
 int ClapTrap::getAttackDamage()
 {
 	return this->attackDamage;
 }
+
 ClapTrap::ClapTrap(std::string _name) :name(_name) {
 	std::cout << "Initializate ClapTrap :" << this->name << std::endl;
 	this->energyPoints = 100;
 	this->hitPoint = 100;
 	this->attackDamage = 30;
+}
+
+ClapTrap::ClapTrap(const ClapTrap &rhs)
+{
+    *this = rhs;
+    std::cout << "ClapTrap copy constructor called" << std::endl;
+    return;
+}
+
+ClapTrap&   ClapTrap::operator=( const ClapTrap& rhs ) {
+    this->name = rhs.name;
+    this->hitPoint = rhs.hitPoint;
+    this->energyPoints = rhs.energyPoints;
+    this->attackDamage = rhs.attackDamage;
+    return *this;
 }
 
 ClapTrap::~ClapTrap()

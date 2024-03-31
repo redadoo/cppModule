@@ -21,6 +21,10 @@ class ClapTrap
         int getAttackDamage();
         const std::string getName();
         ClapTrap(std::string name);
+        ClapTrap(const ClapTrap &rhs);
+
+        ClapTrap &operator=(const ClapTrap& rhs);
+        
         ~ClapTrap();
 };
 

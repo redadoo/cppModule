@@ -3,17 +3,24 @@
 
 int main()
 {
-	std::string nameClapTrap;
-	std::string nameScavTrap;
+	std::string name1;
+	std::string name2;
 
-	std::cout << "Create one ClapTrap" << std::endl;
-	std::cin >> nameClapTrap;
+	std::cout << "Create the first ClapTrap" << std::endl;
+	std::cin >> name1;
 
-	std::cout << "Create one ScavTrap" << std::endl;
-	std::cin >> nameScavTrap;
+	std::cout << "Create the second ScavTrap" << std::endl;
+	std::cin >> name2;
 
-	ClapTrap clapTrap(nameClapTrap);
-	ScavTrap scavTrap(nameScavTrap);
+	ClapTrap clapTrap(name1);
+	ScavTrap scavTrap(name2);
 
-	
+
+	clapTrap.attack(scavTrap.getName());
+	scavTrap.takeDamage(clapTrap.getAttackDamage());
+
+	scavTrap.attack(clapTrap.getName());
+	clapTrap.takeDamage(scavTrap.getAttackDamage());
+
+	scavTrap.guardGate();
 }
