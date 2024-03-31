@@ -13,7 +13,7 @@ class PhoneBook
 		PhoneBook();
 
 		void Add(Contact contact);
-		void Search(int index);
+		void Search(std::string index);
 };
 
 #endif

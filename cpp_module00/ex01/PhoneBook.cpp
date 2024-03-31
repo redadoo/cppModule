@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   PhoneBook.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/28 16:21:22 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/20 13:05:19 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/03/31 14:27:25 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PhoneBook.hpp"
+#include <sstream>
 
-PhoneBook::PhoneBook()
-{
-}
+PhoneBook::PhoneBook() {}
 
 void PhoneBook::Add(Contact contact)
 {
@@ -29,8 +28,13 @@ void PhoneBook::Add(Contact contact)
 	this->contacts[7] = contact;
 }
 
-void PhoneBook::Search(int index)
+void PhoneBook::Search(std::string number)
 {
+	int					index;
+	std::stringstream	ss; 
+
+	ss << number;
+	ss >> index;
 	if (index < 0 || index > 7)
 	{
 		std::cout << "error index out of range " << std::endl;

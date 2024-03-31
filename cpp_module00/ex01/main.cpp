@@ -9,23 +9,26 @@ int main(void)
 	std::cout << "write ADD or SEARCH or EXIT on terminal any other command will be ignored" << std::endl; 
 	while (true)
 	{
-		std::cin >> command;
+		std::cout << "insert Command : ";
+		std::getline(std::cin, command);
 		if (command == "ADD")
 		{
 			Contact		contact;
 			contact.fillField();
 			phoneBook.Add(contact);
 		}
-		if (command == "SEARCH")
+		else if (command == "SEARCH")
 		{
-			int	index;
 			std::cout << "insert contact index : " << std::endl;
-			std::cin >> index;
+			std::getline(std::cin, command);
 			std::cout << std::endl;
-			phoneBook.Search(index);
+			phoneBook.Search(command);
 		}
-		if (command == "EXIT")
+		else if (command == "EXIT")
+		{
+			std::cout << "\nGoodbye\n";
 			break ;
+		}
 	}
 	return 0;
 }
