@@ -22,8 +22,9 @@ protected:
 public:
     WrongAnimal();
     WrongAnimal( std::string type );
+    WrongAnimal( const WrongAnimal& src );
+    WrongAnimal& operator=( const WrongAnimal& rhs );
     ~WrongAnimal();
-
 
     void            makeSound( void ) const;
     std::string     getType( void ) const; 

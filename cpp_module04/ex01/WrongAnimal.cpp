@@ -21,6 +21,17 @@ WrongAnimal::WrongAnimal( std::string type ) : type( type )
     std::cout << "WrongAnimal " << this->type << " constructor called" << std::endl;
 }
 
+WrongAnimal::WrongAnimal( const WrongAnimal& rhs ) 
+{
+    *this = rhs;
+    std::cout << "WrongAnimal copy constructor called" << std::endl;
+}
+
+WrongAnimal&   WrongAnimal::operator=( const WrongAnimal& rhs ) {
+    this->type = rhs.type;
+    return *this;
+}
+
 WrongAnimal::~WrongAnimal( void )
 {
     std::cout << "WrongAnimal destructor called" << std::endl;

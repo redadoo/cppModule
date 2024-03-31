@@ -22,7 +22,8 @@ private:
 public:
     WrongCat( void );
     ~WrongCat( void );
-
+    WrongCat( const WrongCat& src );
+    WrongCat& operator=( const WrongCat& rhs );
     void   makeSound( void ) const;
 };
 

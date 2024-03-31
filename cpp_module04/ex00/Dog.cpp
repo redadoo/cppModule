@@ -27,6 +27,17 @@ Dog::Dog() : Animal("Dog")
 	std::cout << this->type << "  constructor " << std::endl;
 }
 
+Dog::Dog( const Dog& rhs ) : Animal("Dog")
+{
+    *this = rhs;
+    std::cout << "Dog copy constructor called" << std::endl;
+}
+
+Dog&   Dog::operator=( const Dog& rhs ) {
+    this->type = rhs.type;
+    return *this;
+}
+
 Dog::~Dog()
 {
     std::cout << this->type << " decostrutor  " << std::endl;

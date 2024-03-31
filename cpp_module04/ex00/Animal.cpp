@@ -32,6 +32,17 @@ Animal::Animal(std::string _type) : type(_type)
 	std::cout << this->type << "  constructor " << std::endl;
 }
 
+Animal::Animal(const Animal &rhs)
+{
+    *this = rhs;
+    std::cout << "Animal copy constructor called" << std::endl;
+}
+
+Animal&   Animal::operator=( const Animal& rhs ) {
+    this->type = rhs.type;
+    return *this;
+}
+
 Animal::~Animal()
 {
     std::cout << this->type << " decostrutor  " << std::endl;

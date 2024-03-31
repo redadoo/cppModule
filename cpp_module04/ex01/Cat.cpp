@@ -6,7 +6,7 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:35:49 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/14 15:16:18 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/02/14 15:04:45 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,23 @@ void Cat::makeSound() const
 	std::cout << "miao miao" << std::endl;
 }
 
+Cat::Cat( const Cat& rhs ) : Animal("Cat")
+{
+    *this = rhs;
+    std::cout << "Cat copy constructor called" << std::endl;
+}
+
+Cat&   Cat::operator=( const Cat& rhs ) {
+    this->type = rhs.type;
+    return *this;
+}
+
 Cat::Cat() : Animal("Cat")
 {
-    this->brain = new Brain();
 	std::cout << this->type << "  constructor " << std::endl;
 }
 
 Cat::~Cat()
 {
-    delete this->brain;
     std::cout << this->type << " decostrutor  " << std::endl;
 }

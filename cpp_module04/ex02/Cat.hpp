@@ -6,7 +6,7 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:34:31 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/14 15:35:48 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/02/13 15:01:01 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,13 @@
 class Cat : public AAnimal
 {
     private:
-        Brain *brain;
-        
+    
     public:
         ~Cat();
         Cat();
-        
+        Cat( const Cat& src );
+        Cat& operator=( const Cat& rhs );
+
         std::string getType() const;
         void makeSound() const;
 };

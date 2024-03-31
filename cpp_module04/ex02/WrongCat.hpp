@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+cpp_module04/ex01/WrongCat.cpp/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   WrongCat.hpp                                       :+:      :+:    :+:   */
@@ -22,7 +22,8 @@ private:
 public:
     WrongCat( void );
     ~WrongCat( void );
-
+    WrongCat( const WrongCat& src );
+    WrongCat& operator=( const WrongCat& rhs );
     void   makeSound( void ) const;
 };
 

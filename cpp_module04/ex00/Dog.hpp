@@ -23,7 +23,9 @@ class Dog : public Animal
         ~Dog( void );
         Dog( void );
         Dog(std::string _type);
-        
+        Dog( const Dog& src );
+        Dog& operator=( const Dog& rhs );
+
         std::string getType() const;
         void makeSound() const;
 };

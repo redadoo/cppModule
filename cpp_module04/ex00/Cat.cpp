@@ -22,6 +22,17 @@ void Cat::makeSound() const
 	std::cout << "miao miao" << std::endl;
 }
 
+Cat::Cat( const Cat& rhs ) : Animal("Cat")
+{
+    *this = rhs;
+    std::cout << "Cat copy constructor called" << std::endl;
+}
+
+Cat&   Cat::operator=( const Cat& rhs ) {
+    this->type = rhs.type;
+    return *this;
+}
+
 Cat::Cat() : Animal("Cat")
 {
 	std::cout << this->type << "  constructor " << std::endl;

@@ -23,6 +23,6 @@ int main()
     i->makeSound();
     j->makeSound();
     meta->makeSound(); 
-    std::cout << i->getType();
+    std::cout << i->getType() << std::endl;
 
 }
