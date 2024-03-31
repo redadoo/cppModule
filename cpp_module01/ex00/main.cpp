@@ -20,5 +20,5 @@ int main()
 	delete zombi2;
 
 	std::cout << " Calling randomChump(). " << std::endl;
-	randomChump("randi");
+	randomChump("pazzo");
 }

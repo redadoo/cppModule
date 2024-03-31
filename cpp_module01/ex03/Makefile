@@ -12,7 +12,7 @@
 
 NAME 		= human
 
-CC			= g++ -std=c++98
+CC			= c++ -std=c++98
 FLAGS		= -Wall -Wextra -Werror
 RM			= rm -rf
 
