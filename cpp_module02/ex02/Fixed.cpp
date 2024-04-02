@@ -6,7 +6,7 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:01:44 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/02 12:33:29 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/02 12:36:22 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ Fixed Fixed::operator*(const Fixed& other) const {
 }
 
 Fixed Fixed::operator/(const Fixed& other) const {
+	if (other.toFloat() == 0)
+        throw std::invalid_argument("Division by zero");
 	return Fixed( this->toFloat() / other.toFloat() );
 }
 
