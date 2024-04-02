@@ -6,12 +6,16 @@ int main()
     std::string input;
     Harl        harl;
 
-    do
+    while (1)
     {
         std::cout << "Enter a level: ";
         std::cin >> input;
         harl.complain(input);
-    } while (input.compare("exit"));
+        if(input.compare("exit") == 0)
+        {
+            break;
+        }
+    }
 
     return 0;
 }

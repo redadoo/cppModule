@@ -19,6 +19,9 @@ int main()
 	zombi2->announce();
 	delete zombi2;
 
+	std::cout << "Creating zombie with random chump." << std::endl;
+	std::cout << "Zombie name: " << std::endl;
+	std::cin >> name;
 	std::cout << " Calling randomChump(). " << std::endl;
-	randomChump("pazzo");
+	randomChump(name);
 }
