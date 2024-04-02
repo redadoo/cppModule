@@ -6,7 +6,7 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:01:44 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/20 15:48:01 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/02 11:34:18 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Fixed::Fixed()
 Fixed::Fixed( Fixed &fixed)
 {
 	std::cout << "Copy Constructor called" << std::endl;
-	this->value = fixed.getRawBits();
+	*this = fixed;
 }
 
 Fixed::~Fixed()

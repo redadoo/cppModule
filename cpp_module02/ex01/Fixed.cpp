@@ -6,7 +6,7 @@
 /*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:01:44 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/20 16:21:29 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/02 11:48:40 by edoardo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ Fixed::Fixed(const int &v): value(v << bits )
 	std::cout << "int Constructor called" << std::endl;
 }
 
-Fixed::Fixed( const Fixed &fixed) : value(fixed.value)
+Fixed::Fixed( const Fixed &fixed)
 {
 	std::cout << "Copy Constructor called" << std::endl;
+	*this = fixed;
 }
 
 Fixed::Fixed(const float &v) : value( roundf( v * ( 1 << bits ) ))
