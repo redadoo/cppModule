@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   Fixed.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:01:44 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/02 12:36:22 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/03 18:28:36 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include"Fixed.hpp"
 # include <cmath>
 
-Fixed::Fixed() : value(0)
+Fixed::Fixed()
 {
+    this->value = 0;
 }
 
-Fixed::Fixed(const int &v): value(v << bits )
+Fixed::Fixed(const int &v)
 {
+    this->value = v << bits;
 }
 
 Fixed::Fixed( const Fixed &fixed)
@@ -26,19 +28,17 @@ Fixed::Fixed( const Fixed &fixed)
 	*this = fixed;
 }
 
-Fixed::Fixed(const float &v) : value( roundf( v * ( 1 << bits ) ))
+Fixed::Fixed(const float &v)
 {
+    this->value = roundf(v*( 1 << bits));
 }
 
-Fixed::~Fixed()
-{
-}
+Fixed::~Fixed() {}
 
 
 const Fixed& Fixed::operator=(Fixed const& fixed)
 {
-	if (this != &fixed)
-		this->value = fixed.getRawBits();
+    this->value = fixed.getRawBits();
 	return *this;
 }
 
@@ -53,16 +53,16 @@ void Fixed::setRawBits( int const raw )
 }
 
 float Fixed::toFloat(void) const {
-    return static_cast<float>( this->getRawBits() ) / ( 1 << this->bits );
+    return (float( this->getRawBits() ) / ( 1 << this->bits ));
 }
 
 int Fixed::toInt(void) const {
     return this->value >> this->bits;
 }
 
-std::ostream &operator<<(std::ostream &o, Fixed const &i)
+std::ostream &operator<<(std::ostream &o, Fixed const &fix)
 {
-	o << i.toFloat();
+	o << fix.toFloat();
 	return o;
 }
 

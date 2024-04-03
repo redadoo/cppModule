@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:07:24 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/02 12:37:32 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/03 18:28:21 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int main( void ) {
 	std::cout << b << std::endl;
 	std::cout << Fixed::max( a, b ) << std::endl;
 	Fixed z (0);
-	Fixed x (a / z);
+	Fixed y (0);
+	Fixed x (y / z);
+	std::cout << x << std::endl;
 	return 0;
 }
