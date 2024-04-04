@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/04 11:41:37 by evocatur          #+#    #+#             */
+/*   Updated: 2024/04/04 11:41:37 by evocatur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "ScavTrap.hpp"
 
 int main()
 {
+	size_t i = 7;
 	std::string name1;
 	std::string name2;
 
@@ -19,8 +32,13 @@ int main()
 	clapTrap.attack(scavTrap.getName());
 	scavTrap.takeDamage(clapTrap.getAttackDamage());
 
-	scavTrap.attack(clapTrap.getName());
-	clapTrap.takeDamage(scavTrap.getAttackDamage());
+	clapTrap.beRepaired(1);
+	while (i)
+	{
+		scavTrap.attack(clapTrap.getName());
+		clapTrap.takeDamage(scavTrap.getAttackDamage());
+		i--;
+	}
 
 	scavTrap.guardGate();
 }

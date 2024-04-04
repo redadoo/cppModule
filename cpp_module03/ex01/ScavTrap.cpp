@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ScavTrap.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:48:54 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/13 12:56:21 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 11:42:24 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void ScavTrap::guardGate()
 {
-    std::cout << "ScavTrap : "<< this->name << "is now in is now in Gate keeper mode" << std::endl;
+    std::cout << "ScavTrap : "<< this->name << "is now in Gate keeper mode" << std::endl;
 }
 
 ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
@@ -24,14 +24,14 @@ ScavTrap::ScavTrap(std::string name) : ClapTrap(name)
 
 void ScavTrap::attack(const std::string &target)
 {
-    if (this->energyPoints > 0 && this->energyPoints >0)
+    if (this->energyPoints > 0)
 	{
 		std::cout << "ScavTrap : " << this->name <<" attacks " << target << " causing "<< this->attackDamage <<" points of damage!" << std::endl;
 		this->energyPoints--;
 	}
 	else
 	{
-		std::cout << "ScavTrap : " << this->name << " tries to attack "<< target <<" but has no energy "<< std::endl;
+		std::cout << "ScavTrap : " << this->name << " attack "<< target <<" but has no energy "<< std::endl;
 	}
 }
 

@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/04 11:42:06 by evocatur          #+#    #+#             */
+/*   Updated: 2024/04/04 11:42:07 by evocatur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "FragTrap.hpp"
 
 int main()
 {
+	size_t i = 5;
+
 	std::string name1;
 	std::string name2;
 
@@ -21,6 +35,13 @@ int main()
 
 	fragTrap.attack(clapTrap.getName());
 	clapTrap.takeDamage(fragTrap.getAttackDamage());
+
+	while (i)
+	{
+		fragTrap.attack(clapTrap.getName());
+		clapTrap.takeDamage(fragTrap.getAttackDamage());
+		i--;
+	}
 
 	fragTrap.highFivesGuys();
 }

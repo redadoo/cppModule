@@ -1,30 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ClapTrap.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/04 11:41:16 by evocatur          #+#    #+#             */
+/*   Updated: 2024/04/04 11:41:16 by evocatur         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ClapTrap.hpp"
 
 void ClapTrap::attack(const std::string& target)
 {
-	if (this->energyPoints > 0 && this->energyPoints >0)
+	if (this->energyPoints > 0)
 	{
-		std::cout << this->name <<" attacks " << target << " causing "<< this->attackDamage <<" points of damage!" << std::endl;
+		std::cout << this->name <<" attacks, " << target << " lose "<< this->attackDamage <<" Hit points!" << std::endl;
 		this->energyPoints--;
 	}
 	else
 	{
-		std::cout << this->name << " tries to attack "<< target <<" but has no energy "<< std::endl;
+		std::cout << this->name << " attack "<< target <<" but has no Energy points left "<< std::endl;
 	}
 }
 
 void ClapTrap::takeDamage(unsigned int amount)
 {
-	std::cout << this->name << " take damage  causing  lost "<< this->attackDamage << " hit point "<< std::endl;
-	if (this->hitPoint > 0 && this->energyPoints >0)
+	std::cout << this->name << " lose "<< this->attackDamage << " hit point "<< std::endl;
+	if (this->hitPoint > 0)
 		this->hitPoint -= amount;
 	else 
-		delete this;
+		std::cout << this->name << " is dead "<< std::endl;
 }
 
 void ClapTrap:: beRepaired(unsigned int amount)
 {
-	if (this->energyPoints > 0 && this->energyPoints >0)
+	if (this->energyPoints > 0)
 	{
 		std::cout << this->name << " is repairing himself for " << amount << " hit point "<< std::endl;
 		this->energyPoints--;
@@ -32,7 +44,7 @@ void ClapTrap:: beRepaired(unsigned int amount)
 	}
 	else
 	{
-		std::cout << this->name << " tries to repair himself but has no energy "<< std::endl;
+		std::cout << this->name << " repair himself but has no Energy points left "<< std::endl;
 	}
 }
 
@@ -53,18 +65,18 @@ ClapTrap::ClapTrap(std::string _name) :name(_name) {
 	this->attackDamage = 0;
 }
 
-ClapTrap::ClapTrap(const ClapTrap &rhs)
+ClapTrap::ClapTrap(const ClapTrap &other)
 {
-    *this = rhs;
+    *this = other;
     std::cout << "ClapTrap copy constructor called" << std::endl;
     return;
 }
 
-ClapTrap&   ClapTrap::operator=( const ClapTrap& rhs ) {
-    this->name = rhs.name;
-    this->hitPoint = rhs.hitPoint;
-    this->energyPoints = rhs.energyPoints;
-    this->attackDamage = rhs.attackDamage;
+ClapTrap&   ClapTrap::operator=( const ClapTrap& other ) {
+    this->name = other.name;
+    this->hitPoint = other.hitPoint;
+    this->energyPoints = other.energyPoints;
+    this->attackDamage = other.attackDamage;
     return *this;
 }
 
