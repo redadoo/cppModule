@@ -6,7 +6,7 @@
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:35:49 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:16:39 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void Dog::makeSound() const
 
 Dog::Dog() : AAnimal("Dog")
 {
-	std::cout << this->type << "  constructor " << std::endl;
+	std::cout << "Dog  constructor called " << std::endl;
+    brain = new Brain();
 }
 
 Dog::Dog( const Dog& other ) : AAnimal("Dog")
@@ -35,10 +36,12 @@ Dog::Dog( const Dog& other ) : AAnimal("Dog")
 
 Dog&   Dog::operator=( const Dog& other ) {
     this->type = other.type;
+    this->brain = new Brain(*other.brain);
     return *this;
 }
 
 Dog::~Dog()
 {
-    std::cout << this->type << " decostrutor  " << std::endl;
+    std::cout << "dog decostrutor called" << std::endl;
+    delete brain;
 }

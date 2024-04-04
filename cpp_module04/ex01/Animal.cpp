@@ -6,7 +6,7 @@
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:37:47 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
+/*   Updated: 2024/04/04 13:27:56 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void Animal::makeSound() const
 
 Animal::Animal()
 {
-	std::cout << this->type << "  constructor " << std::endl;
+	std::cout << "Animal  constructor called " << std::endl;
 }
 
 Animal::Animal(std::string _type) : type(_type)
 {
-	std::cout << this->type << "  constructor " << std::endl;
+	std::cout << "Animal constructor  called " << std::endl;
 }
 
 Animal::Animal(const Animal &other)
@@ -45,5 +45,5 @@ Animal&   Animal::operator=( const Animal& other ) {
 
 Animal::~Animal()
 {
-    std::cout << this->type << " decostrutor  " << std::endl;
+    std::cout << "animal decostrutor  called" << std::endl;
 }

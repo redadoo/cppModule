@@ -6,7 +6,7 @@
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:35:49 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:16:31 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,18 @@ Cat::Cat( const Cat& other ) : AAnimal("Cat")
 
 Cat&   Cat::operator=( const Cat& other ) {
     this->type = other.type;
+    this->brain = new Brain(*other.brain);
     return *this;
 }
 
 Cat::Cat() : AAnimal("Cat")
 {
-	std::cout << this->type << "  constructor " << std::endl;
+	std::cout <<"Cat constructor called " << std::endl;
+    brain = new Brain();
 }
 
 Cat::~Cat()
 {
-    std::cout << this->type << " decostrutor  " << std::endl;
+    std::cout << "cat decostrutor called" << std::endl;
+    delete brain;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Brain.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:06:18 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/14 15:15:11 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ private:
 public:
     std::string ideas[100];
     Brain();
+    Brain( const Brain& src );
+    Brain& operator=( const Brain& other );
     ~Brain();
 };
 
