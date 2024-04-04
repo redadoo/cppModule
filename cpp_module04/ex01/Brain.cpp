@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Brain.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:06:21 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/02 12:54:59 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ Brain::Brain( const Brain& src )
     *this = src;
 }
 
-Brain&   Brain::operator=( const Brain& rhs ) {
-    if (this != &rhs) {
+Brain&   Brain::operator=( const Brain& other ) {
+    if (this != &other) {
         for (int i = 0; i < 100; ++i) {
-            this->ideas[i] = rhs.ideas[i];
+            this->ideas[i] = other.ideas[i];
         }
     }
 	return *this;

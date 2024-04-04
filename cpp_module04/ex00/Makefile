@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+         #
+#    By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/23 15:54:22 by edoardo           #+#    #+#              #
-#    Updated: 2024/03/07 15:27:45 by edoardo          ###   ########.fr        #
+#    Updated: 2024/04/04 13:22:31 by evocatur         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ RM			= rm -rf
 
 OBJDIR      = .objFiles
 
-FILES		= main Animal Cat Dog
+FILES		= main Animal Cat Dog WrongCat WrongAnimal
 
 SRC			= $(FILES:=.cpp)
 OBJ			= $(addprefix $(OBJDIR)/, $(FILES:=.o))
-HEADER		= Animal.hpp Cat.hpp Dog.hpp
+HEADER		= Animal.hpp Cat.hpp Dog.hpp WrongCat.hpp WrongAnimal.hpp
 
 NONE="\033[0m"
 GREEN="\033[32m"
@@ -43,6 +43,9 @@ $(NAME): $(OBJ) $(HEADER)
 $(OBJDIR)/%.o: %.cpp $(HEADER)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(OPTS) -c $< -o $@
+
+leaks: re
+	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --log-file=leaks.txt ./$(NAME)
 
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)

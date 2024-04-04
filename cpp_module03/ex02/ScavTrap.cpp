@@ -6,7 +6,7 @@
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:48:54 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/04 11:42:14 by evocatur         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,15 @@ void ScavTrap::attack(const std::string &target)
 	}
 }
 
-ScavTrap::ScavTrap(const ScavTrap &rhs) : ClapTrap(rhs.name)
+ScavTrap::ScavTrap(const ScavTrap &other) : ClapTrap(other.name)
 {
-    *this = rhs;
+    *this = other;
     std::cout << "ScavTrap copy constructor called" << std::endl;
     return;
 }
 
-ScavTrap&   ScavTrap::operator=( const ScavTrap& rhs ) {
-    this->name = rhs.name;
+ScavTrap&   ScavTrap::operator=( const ScavTrap& other ) {
+    this->name = other.name;
     return *this;
 }
 

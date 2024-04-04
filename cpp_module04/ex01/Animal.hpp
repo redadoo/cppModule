@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Animal.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/23 19:23:53 by edoardo           #+#    #+#             */
-/*   Updated: 2024/03/31 04:14:33 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ public:
     virtual ~Animal( void );
 
     Animal( const Animal& src );
-    Animal& operator=( const Animal& rhs );
+    Animal& operator=( const Animal& other );
 
     virtual void    makeSound( void ) const;
     std::string     getType( void ) const; 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Fixed.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:56:35 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/02 12:26:39 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,17 @@ class Fixed
 		
 		~Fixed();
 
-		bool    operator>( const Fixed &rhs ) const ;
-		bool    operator<( const Fixed &rhs ) const ;
-		bool    operator>=( const Fixed &rhs ) const ;
-		bool    operator<=( const Fixed &rhs ) const ;
-		bool    operator==( const Fixed &rhs ) const ;
-		bool    operator!=( const Fixed &rhs ) const ;
+		bool    operator>( const Fixed &other ) const ;
+		bool    operator<( const Fixed &other ) const ;
+		bool    operator>=( const Fixed &other ) const ;
+		bool    operator<=( const Fixed &other ) const ;
+		bool    operator==( const Fixed &other ) const ;
+		bool    operator!=( const Fixed &other ) const ;
 
-		Fixed   operator+( const Fixed &rhs ) const ;
-		Fixed   operator-( const Fixed &rhs ) const ;
-		Fixed   operator*( const Fixed &rhs ) const ;
-		Fixed   operator/( const Fixed &rhs ) const ;
+		Fixed   operator+( const Fixed &other ) const ;
+		Fixed   operator-( const Fixed &other ) const ;
+		Fixed   operator*( const Fixed &other ) const ;
+		Fixed   operator/( const Fixed &other ) const ;
 
 		Fixed&  operator++( void ); // pre
 		Fixed   operator++( int ); // post

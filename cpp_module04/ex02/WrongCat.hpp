@@ -23,7 +23,7 @@ public:
     WrongCat( void );
     ~WrongCat( void );
     WrongCat( const WrongCat& src );
-    WrongCat& operator=( const WrongCat& rhs );
+    WrongCat& operator=( const WrongCat& other );
     void   makeSound( void ) const;
 };
 

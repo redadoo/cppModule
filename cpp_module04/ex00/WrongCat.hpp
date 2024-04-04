@@ -1,35 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ScavTrap.hpp                                       :+:      :+:    :+:   */
+/*   WrongCat.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/04 11:41:46 by evocatur          #+#    #+#             */
-/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
+/*   Created: 2024/04/04 12:25:20 by evocatur          #+#    #+#             */
+/*   Updated: 2024/04/04 13:35:58 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#ifndef WRONGCAT_HPP
+#define WRONGCAT_HPP
 
-#include "ClapTrap.hpp"
+#include "WrongAnimal.hpp"
 
-#ifndef SCAVTRAP_H
-#define SCAVTRAP_H
-
-class ScavTrap : public ClapTrap
+class WrongCat : public WrongAnimal
 {
-    
-    private:
-    
-    public:
-        void attack(const std::string& target);
-        ScavTrap(std::string name);
-        ScavTrap(const ScavTrap &other);
+private:
 
-        ScavTrap &operator=(const ScavTrap& other);
-        ~ScavTrap(); 
-        void guardGate();
+public:
+    WrongCat( void );
+    ~WrongCat( void );
+    WrongCat( const WrongCat& src );
+    WrongCat& operator=( const WrongCat& other );
+    void   makeSound( void ) const;
 };
-
 
 #endif

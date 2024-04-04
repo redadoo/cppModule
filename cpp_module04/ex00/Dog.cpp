@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Dog.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:35:49 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/14 15:04:54 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 13:27:45 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,21 +24,21 @@ void Dog::makeSound() const
 
 Dog::Dog() : Animal("Dog")
 {
-	std::cout << this->type << "  constructor " << std::endl;
+	std::cout << "Dog  constructor called " << std::endl;
 }
 
-Dog::Dog( const Dog& rhs ) : Animal("Dog")
+Dog::Dog( const Dog& other ) : Animal("Dog")
 {
-    *this = rhs;
+    *this = other;
     std::cout << "Dog copy constructor called" << std::endl;
 }
 
-Dog&   Dog::operator=( const Dog& rhs ) {
-    this->type = rhs.type;
+Dog&   Dog::operator=( const Dog& other ) {
+    this->type = other.type;
     return *this;
 }
 
 Dog::~Dog()
 {
-    std::cout << this->type << " decostrutor  " << std::endl;
+    std::cout << "dog decostrutor called" << std::endl;
 }

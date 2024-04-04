@@ -6,7 +6,7 @@
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/04 11:41:22 by evocatur          #+#    #+#             */
-/*   Updated: 2024/04/04 11:41:22 by evocatur         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ class ClapTrap
         int getAttackDamage();
         const std::string getName();
         ClapTrap(std::string name);
-        ClapTrap(const ClapTrap &rhs);
+        ClapTrap(const ClapTrap &other);
 
-        ClapTrap &operator=(const ClapTrap& rhs);
+        ClapTrap &operator=(const ClapTrap& other);
         
         ~ClapTrap();
 };

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:34:31 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/13 15:01:01 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class Cat : public AAnimal
         ~Cat();
         Cat();
         Cat( const Cat& src );
-        Cat& operator=( const Cat& rhs );
+        Cat& operator=( const Cat& other );
 
         std::string getType() const;
         void makeSound() const;

@@ -6,7 +6,7 @@
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:58:09 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/04 11:42:00 by evocatur         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,15 @@ FragTrap::FragTrap(std::string name) : ClapTrap(name)
     std::cout << "Initializate FragTrap : "<< this->name << std::endl;
 }
 
-FragTrap::FragTrap(const FragTrap &rhs) : ClapTrap(rhs.name)
+FragTrap::FragTrap(const FragTrap &other) : ClapTrap(other.name)
 {
-    *this = rhs;
+    *this = other;
     std::cout << "FragTrap copy constructor called" << std::endl;
     return;
 }
 
-FragTrap&   FragTrap::operator=( const FragTrap& rhs ) {
-    this->name = rhs.name;
+FragTrap&   FragTrap::operator=( const FragTrap& other ) {
+    this->name = other.name;
     return *this;
 }
 

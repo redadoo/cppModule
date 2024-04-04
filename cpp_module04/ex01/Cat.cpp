@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Cat.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:35:49 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/14 15:04:45 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@ void Cat::makeSound() const
 	std::cout << "miao miao" << std::endl;
 }
 
-Cat::Cat( const Cat& rhs ) : Animal("Cat")
+Cat::Cat( const Cat& other ) : Animal("Cat")
 {
-    *this = rhs;
+    *this = other;
     std::cout << "Cat copy constructor called" << std::endl;
 }
 
-Cat&   Cat::operator=( const Cat& rhs ) {
-    this->type = rhs.type;
+Cat&   Cat::operator=( const Cat& other ) {
+    this->type = other.type;
     return *this;
 }
 

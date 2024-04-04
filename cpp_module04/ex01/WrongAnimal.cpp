@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   WrongAnimal.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: edoardo <edoardo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:06:42 by edoardo           #+#    #+#             */
-/*   Updated: 2024/02/14 14:57:53 by edoardo          ###   ########.fr       */
+/*   Updated: 2024/04/04 13:29:26 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "WrongAnimal.hpp"
 
-WrongAnimal::WrongAnimal( void ) : type( "WrongAnimel" ) {
+WrongAnimal::WrongAnimal( void ) : type( "WrongAnimal" ) {
     std::cout << this->type << " constructor called" << std::endl;
 }
 
@@ -21,14 +21,14 @@ WrongAnimal::WrongAnimal( std::string type ) : type( type )
     std::cout << "WrongAnimal " << this->type << " constructor called" << std::endl;
 }
 
-WrongAnimal::WrongAnimal( const WrongAnimal& rhs ) 
+WrongAnimal::WrongAnimal( const WrongAnimal& other ) 
 {
-    *this = rhs;
+    *this = other;
     std::cout << "WrongAnimal copy constructor called" << std::endl;
 }
 
-WrongAnimal&   WrongAnimal::operator=( const WrongAnimal& rhs ) {
-    this->type = rhs.type;
+WrongAnimal&   WrongAnimal::operator=( const WrongAnimal& other ) {
+    this->type = other.type;
     return *this;
 }
 

@@ -6,7 +6,7 @@
 /*   By: evocatur <evocatur@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:58:12 by edoardo           #+#    #+#             */
-/*   Updated: 2024/04/04 11:42:03 by evocatur         ###   ########.fr       */
+/*   Updated: 2024/04/04 12:23:35 by evocatur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ private:
     
 public:
     FragTrap(std::string name);
-    FragTrap(const FragTrap &rhs);
+    FragTrap(const FragTrap &other);
 
-    FragTrap &operator=(const FragTrap& rhs);
+    FragTrap &operator=(const FragTrap& other);
     ~FragTrap();
     void highFivesGuys(void);
 };
