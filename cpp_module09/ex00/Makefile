@@ -44,6 +44,9 @@ $(OBJDIR)/%.o: %.cpp $(HEADER)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(OPTS) -c $< -o $@
 
+play: re
+	./$(NAME) input.txt
+
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)
 

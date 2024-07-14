@@ -52,6 +52,8 @@
         "concepts": "cpp",
         "ratio": "cpp",
         "numbers": "cpp",
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "map": "cpp",
+        "stack": "cpp"
     }
 }

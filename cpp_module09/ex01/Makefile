@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		= ScalarConverter
+NAME 		= RPN
 
 CC			= c++ -std=c++98
 FLAGS		= -Wall -Wextra -Werror
@@ -18,11 +18,11 @@ RM			= rm -rf
 
 OBJDIR      = .objFiles
 
-FILES		= main ScalarConverter
+FILES		= main 
 
 SRC			= $(FILES:=.cpp)
 OBJ			= $(addprefix $(OBJDIR)/, $(FILES:=.o))
-HEADER		= ScalarConverter.hpp
+HEADER		= 
 
 NONE="\033[0m"
 GREEN="\033[32m"
@@ -43,6 +43,9 @@ $(NAME): $(OBJ) $(HEADER)
 $(OBJDIR)/%.o: %.cpp $(HEADER)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(OPTS) -c $< -o $@
+
+play: re
+	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
 
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)
