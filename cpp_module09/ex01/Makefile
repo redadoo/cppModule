@@ -18,11 +18,11 @@ RM			= rm -rf
 
 OBJDIR      = .objFiles
 
-FILES		= main 
+FILES		= main RPN 
 
 SRC			= $(FILES:=.cpp)
 OBJ			= $(addprefix $(OBJDIR)/, $(FILES:=.o))
-HEADER		= 
+HEADER		= RPN.hpp
 
 NONE="\033[0m"
 GREEN="\033[32m"
@@ -44,8 +44,8 @@ $(OBJDIR)/%.o: %.cpp $(HEADER)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(OPTS) -c $< -o $@
 
-play: re
-	./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+play:re
+	@./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
 
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)
