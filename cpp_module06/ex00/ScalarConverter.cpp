@@ -6,6 +6,7 @@ enum Type
     _int,
     _float,
     _double,
+	_pseudoLiterals,
 	_none
 };
 
@@ -84,6 +85,14 @@ void literalDouble(double nbr)
     std::cout << "double: " << static_cast<double>(nbr) << std::endl;
 }
 
+void printPseudoLiberal(std::string str)
+{
+	std::cout << "char: " << ERROR_IMPOSSIBLE  << std::endl;
+	std::cout << "int: " << ERROR_IMPOSSIBLE << std::endl;
+    std::cout << "float: " << str  << 'f' << std::endl;
+    std::cout << "double: " << str << std::endl;
+}
+
 bool IsStringInt(const std::string& str)
 {
 	size_t i = 0;
@@ -98,7 +107,6 @@ bool IsStringInt(const std::string& str)
 	{
 		if (isdigit(str[i]) == 0) 
 			return false;
-
 		i++;
 	}
 	
@@ -137,15 +145,18 @@ bool IsStringDouble(const std::string& str)
 
 Type GetVarType(const std::string& toConvert)
 {
+	if (toConvert.compare("-inff") || toConvert.compare("+inff") || 
+		toConvert.compare("-inf") || toConvert.compare("+inf") || 
+		toConvert.compare("nan"))
+		return _pseudoLiterals;
 	if (toConvert.length() == 1 && !std::isdigit(toConvert[0]))
 		return _char;
 	if (IsStringInt(toConvert))
 		return _int;
-	if (IsStringFloat(toConvert) || toConvert.compare("-inff") || toConvert.compare("+inff"))
+	if (IsStringFloat(toConvert))
 		return _float;
-	if (IsStringDouble(toConvert) || toConvert.compare("-inf") || toConvert.compare("+inf") || toConvert.compare("nan"))
+	if (IsStringDouble(toConvert))
 		return _double;
-
 	return _none;
 }
 
@@ -169,6 +180,10 @@ void ScalarConverter::convert(const std::string& toConvert)
 		literalDouble(stringToDouble(toConvert));
 		break;
 
+	case _pseudoLiterals:
+		printPseudoLiberal(toConvert);
+		break;
+	
 	case _none:
 		std::cout << "is none \n";
 		break;
