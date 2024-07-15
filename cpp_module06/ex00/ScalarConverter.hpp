@@ -11,6 +11,8 @@
 #define ERROR_IMPOSSIBLE "impossible"
 #define ERROR_NON_DISPLAYABLE "Non displayable"
 
+#define MAX_STRING_LENGHT 10
+
 class  ScalarConverter
 {
 private:

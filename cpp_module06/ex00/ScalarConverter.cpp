@@ -68,7 +68,7 @@ void literalFloat(float nbr)
     else
 		std::cout << "char: " << ERROR_NON_DISPLAYABLE  << std::endl;
 
-	std::cout << "int: " << nbr << std::endl;
+	std::cout << "int: " << static_cast<int>(nbr) << std::endl;
     std::cout << "float: " << FIXED_FLOAT(static_cast<float>(nbr))  << 'f' << std::endl;
     std::cout << "double: " << static_cast<double>(nbr) << std::endl;
 }
@@ -80,7 +80,7 @@ void literalDouble(double nbr)
     else
 		std::cout << "char: " << ERROR_NON_DISPLAYABLE  << std::endl;
 
-	std::cout << "int: " << nbr << std::endl;
+	std::cout << "int: " << static_cast<int>(nbr) << std::endl;
     std::cout << "float: " << FIXED_FLOAT(static_cast<float>(nbr))  << 'f' << std::endl;
     std::cout << "double: " << static_cast<double>(nbr) << std::endl;
 }
@@ -100,7 +100,7 @@ bool IsStringInt(const std::string& str)
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 
-	if (str.length() > 10 + i)
+	if (str.length() > MAX_STRING_LENGHT + i)
 		return false;
 
 	while (i < str.length())
@@ -109,7 +109,6 @@ bool IsStringInt(const std::string& str)
 			return false;
 		i++;
 	}
-	
 	return true;
 }
 
@@ -145,9 +144,9 @@ bool IsStringDouble(const std::string& str)
 
 Type GetVarType(const std::string& toConvert)
 {
-	if (toConvert.compare("-inff") || toConvert.compare("+inff") || 
-		toConvert.compare("-inf") || toConvert.compare("+inf") || 
-		toConvert.compare("nan"))
+	if (toConvert.compare("-inff") == 0 || toConvert.compare("+inff") == 0|| 
+		toConvert.compare("-inf") == 0 || toConvert.compare("+inf") == 0|| 
+		toConvert.compare("nan") == 0)
 		return _pseudoLiterals;
 	if (toConvert.length() == 1 && !std::isdigit(toConvert[0]))
 		return _char;
