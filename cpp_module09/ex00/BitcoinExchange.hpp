@@ -22,12 +22,13 @@ struct Date
 class BitcoinExchange
 {
 private:
-    std::multimap<std::string, float> database;
-    std::multimap<std::string, float> fileValue;
+    std::multimap<Date*, float> database;
+    std::multimap<Date*, float> fileValue;
 
-    std::multimap<std::string, float> InitMultiMap(std::string filename, char sep);
+    void InitMultiMap(const std::string &filename, char sep, const std::multimap<Date*, float>& toFill);
     void ProcessData(char *filename);
     void SearchExchangeValue();
+
 public:
     ~BitcoinExchange();
     BitcoinExchange(char *fileName);
