@@ -10,8 +10,10 @@ class Intern
 private:
     
 public:
-    Intern();
-    ~Intern();
+	Intern();
+	Intern(const Intern& src);
+	Intern& operator=(const Intern& src);
+	~Intern();
 
     AForm *makeForm(std::string formName, std::string formTarger);
 };

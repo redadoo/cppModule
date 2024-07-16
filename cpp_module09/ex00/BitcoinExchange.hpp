@@ -6,7 +6,8 @@
 #include <string>
 #include <map>
 #include <sstream>
-#include <stdlib.h>
+#include <cstdlib>
+#include <limits>
 
 struct Date
 {
@@ -14,20 +15,23 @@ struct Date
     int month;
     int day;
 
-    Date(std::string date);
-    ~Date();
+    bool badData;
+    
+    Date(const std::string& date);
+    bool operator<(const Date& other) const;
+    bool operator>(const Date& other) const;
 };
+
+std::ostream & operator<<( std::ostream & o, Date const & i );
 
 
 class BitcoinExchange
 {
 private:
-    std::multimap<Date*, float> database;
-    std::multimap<Date*, float> fileValue;
+    std::multimap<Date, float> database;
 
-    void InitMultiMap(const std::string &filename, char sep, const std::multimap<Date*, float>& toFill);
-    void ProcessData(char *filename);
-    void SearchExchangeValue();
+    void InitMultiMap(const std::string &filename, char sep, std::multimap<Date, float>& toFill);    
+    void SearchExchangeValue(char *filename);
 
 public:
     ~BitcoinExchange();

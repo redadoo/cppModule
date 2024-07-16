@@ -1,13 +1,19 @@
 #include "PresidentialPardonForm.hpp"
 
-PresidentialPardonForm::PresidentialPardonForm(std::string _target) : AForm("PresidentialPardonForm", 25, 5), target(_target)
-{
+PresidentialPardonForm::PresidentialPardonForm(std::string _target) : AForm("PresidentialPardonForm", 25, 5), target(_target) {}
 
-}
-PresidentialPardonForm::~PresidentialPardonForm()
-{
+PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& src) : AForm(src), target(src.target) {}
 
+PresidentialPardonForm& PresidentialPardonForm::operator=(const PresidentialPardonForm& src)
+{
+	if (this == &src)
+		return *this;
+	AForm::operator=(src);
+	target = src.target;
+	return *this;
 }
+
+PresidentialPardonForm::~PresidentialPardonForm() {}
 
 void    PresidentialPardonForm::execute(const Bureaucrat& executor) const {
     if ( executor.getGrade() > this->getGradeToExecute() )

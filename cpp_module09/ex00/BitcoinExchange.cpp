@@ -1,84 +1,144 @@
 #include "BitcoinExchange.hpp"
+#include <climits>
 
-void BitcoinExchange::InitMultiMap(const std::string &filename, char sep, const std::multimap<Date*, float>& toFill)
+void BitcoinExchange::InitMultiMap(const std::string &filename, char sep,
+	std::multimap<Date, float> &toFill)
 {
 	float	value;
-	std::string line;
-	std::ifstream inputFile(filename.c_str());
-	if (inputFile.is_open())
-	{
-		while (std::getline(inputFile, line))
-		{
-			if (line == "date,exchange_rate" || line == "date | value")
-				continue ;
 
-			std::string::size_type sepPos = line.find(sep);
-			
-			if (sepPos != std::string::npos)
+	std::ifstream inputFile(filename.c_str());
+	if (!inputFile.is_open())
+	{
+		std::cerr << "Failed to open the file." << std::endl;
+		return ;
+	}
+	std::string line;
+	while (std::getline(inputFile, line))
+	{
+		if (line == "date,exchange_rate" || line == "date | value")
+			continue ;
+		std::string::size_type sepPos = line.find(sep);
+		if (sepPos != std::string::npos)
+		{
+			std::string key = line.substr(0, sepPos);
+			value = std::atof(line.substr(sepPos + 1).c_str());
+			Date date(key);
+			toFill.insert(std::make_pair(date, value));
+		}
+		else
+		{
+			Date date(line);
+			date.badData = true;
+			toFill.insert(std::make_pair(date, 0));
+		}
+	}
+	inputFile.close();
+}
+
+void	printData(std::multimap<Date, float> test)
+{
+	std::multimap<Date, float>::iterator it;
+	for (it = test.begin(); it != test.end(); ++it)
+		std::cout << it->first << "  " << it->second << "\n";
+}
+
+void BitcoinExchange::SearchExchangeValue(char *filename)
+{
+	float	value;
+
+	std::multimap<Date, float>::iterator databaseIterator;
+	std::ifstream inputFile(filename);
+	if (!inputFile.is_open())
+	{
+		std::cerr << "Failed to open the file." << std::endl;
+		return ;
+	}
+	std::string line;
+	while (std::getline(inputFile, line))
+	{
+		if (line == "date,exchange_rate" || line == "date | value")
+			continue ;
+		std::string::size_type sepPos = line.find('|');
+		if (sepPos != std::string::npos)
+		{
+			std::string key = line.substr(0, sepPos);
+			value = std::atof(line.substr(sepPos + 1).c_str());
+			Date date(key);
+			databaseIterator = database.begin();
+			while (databaseIterator != database.end())
 			{
-				std::string key = line.substr(0, sepPos);
-				value = std::atof(line.substr(sepPos + 2).c_str());
-				key = key.substr(0, key.size() - 1);
-				Date *test = new Date(key);
-				toFill.insert(std::make_pair(test, value));
+				if (databaseIterator->first > date)
+					break ;
+				++databaseIterator;
+			}
+			if (databaseIterator != database.begin())
+				databaseIterator--;
+			if (value < 0)
+			{
+				std::cout << "Error: not a positive number."
+							<< "\n";
+			}
+			else if (value > 1000)
+			{
+				std::cout << "Error: too large a number."
+							<< "\n";
 			}
 			else
 			{
-				Date *test = new Date(line);
-				toFill->insert(std::make_pair(test, -100));
+				std::cout << date << " => " << value << " = " << value
+					* databaseIterator->second << "\n";
 			}
 		}
-		inputFile.close();
+		else
+		{
+			std::cout << "Error: bad input => " << line << "\n";
+		}
 	}
-	else
-	{
-		std::cerr << "Failed to open the file." << std::endl;
-	}
-}
-
-void BitcoinExchange::SearchExchangeValue()
-{
-	// std::multimap<std::string, float>::iterator it;
-	// std::multimap<std::string, float>::iterator it1;
-	// for (it = fileValue.begin(); it != fileValue.end(); ++it)
-	// {
-	// 	for (it1 = database.begin(); it1 != database.end(); ++it1)
-	// 	{
-	// 		// if (it1->first.compare(it->first) == 0)
-	// 		// {
-	// 		// 	std::cout << "wow\n";
-	// 		// }
-	// 	}
-	// }
-}
-
-void printData(std::multimap<std::string,float> test)
-{
-	std::multimap<std::string, float>::iterator it;
-
-	for (it = test.begin(); it != test.end(); ++it)
-	{
-		std::cout << it->first << "  "  << it->second << "\n";
-	}
-}
-
-BitcoinExchange::BitcoinExchange(char *filename)
-{
-	database = InitMultiMap("data.csv", ',');
-	fileValue = InitMultiMap(filename, '|');
-	SearchExchangeValue();
 }
 
 BitcoinExchange::~BitcoinExchange()
 {
-
 }
 
-Date::Date(std::string date)
+BitcoinExchange::BitcoinExchange(char *filename)
 {
-    this->year = std::atoi(date.substr(0, date.find_first_of('-')).c_str());
-	date.erase(date.begin(), date.begin() + date.find_first_of('-') + 1);
-	this->month = std::atoi(date.substr(0, date.find_first_of('-')).c_str());
-	date.erase(date.begin(), date.begin() + date.find_first_of('-') + 1);
-	this->day = std::atoi(date.substr(0, date.find_first_of('-')).c_str());
+	InitMultiMap("data.csv", ',', database);
+	SearchExchangeValue(filename);
+}
+
+Date::Date(const std::string &date)
+{
+	std::stringstream ss(date);
+	std::string item;
+	std::getline(ss, item, '-');
+	year = std::atoi(item.c_str());
+	std::getline(ss, item, '-');
+	month = std::atoi(item.c_str());
+	std::getline(ss, item, '-');
+	day = std::atoi(item.c_str());
+	this->badData = false;
+}
+
+std::ostream &operator<<(std::ostream &o, Date const &i)
+{
+	o << i.year << "-" << i.month << "-" << i.day;
+	return (o);
+}
+
+bool Date::operator<(const Date &other) const
+{
+	if (year < other.year)
+		return (true);
+	if (year > other.year)
+		return (false);
+	if (month < other.month)
+		return (true);
+	if (month > other.month)
+		return (false);
+	return (day < other.day);
+}
+
+bool Date::operator>(const Date &other) const
+{
+	return (other < *this);
 }

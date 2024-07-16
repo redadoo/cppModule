@@ -5,15 +5,32 @@ RobotomyRequestForm::RobotomyRequestForm(std::string _target) : AForm ("Robotomy
         srand (time(NULL));
 }
 
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& src) : AForm(src), target(src.target)
+{
+}
+
+RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& src)
+{
+	if (this == &src)
+		return *this;
+	AForm::operator=(src);
+	target = src.target;
+	return *this;
+}
+
 RobotomyRequestForm::~RobotomyRequestForm()
 {
-
 }
 
 void RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {
     int successfully;
 
+    if (this->getIsSigned() == false)
+		throw AForm::FormNotSigned();
+	if (executor.getGrade() > this->getGradeToExecute())
+		throw AForm::GradeTooLowException();
+        
     std::cout << "Zzzzzzzzzzzzz" << std::endl;
     successfully = (rand() % 10) + 1;
     if (successfully % 2 == 0)

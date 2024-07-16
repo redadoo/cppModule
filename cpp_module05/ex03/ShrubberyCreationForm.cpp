@@ -6,9 +6,21 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string _target) :
     AForm("ShrubberyCreationForm", 145, 137), 
     target(_target){}
     
+ShrubberyCreationForm::ShrubberyCreationForm(const ShrubberyCreationForm& src) : AForm(src), target(src.target)
+{
+}
+
+ShrubberyCreationForm& ShrubberyCreationForm::operator=(const ShrubberyCreationForm& src)
+{
+	if (this == &src)
+		return *this;
+	AForm::operator=(src);
+	target = src.target;
+	return *this;
+}
+
 ShrubberyCreationForm::~ShrubberyCreationForm()
 {
-
 }
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const
 {

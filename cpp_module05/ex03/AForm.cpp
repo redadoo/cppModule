@@ -15,9 +15,21 @@ AForm::AForm(std::string _name, int _gradeToSign, int _gradeToExecute) :
 		throw AForm::GradeTooHighException();
 }
 
+
+AForm::AForm(const AForm& src) : name(src.name), isSigned(src.isSigned), gradeToSign(src.gradeToSign), gradeToExecute(src.gradeToExecute)
+{
+}
+
+AForm& AForm::operator=(const AForm& src)
+{
+	if (this == &src)
+		return *this;
+	isSigned = src.isSigned;
+	return *this;
+}
+
 AForm::~AForm()
 {
-	
 }
 
 std::string AForm::getName() const
@@ -50,7 +62,18 @@ void AForm::beSigned(const Bureaucrat &br )
 std::ostream& operator<<(std::ostream& os, const AForm& fr)
 
 {
- 	os << fr.getName() << " Form info : grade to sign " << fr.getGradeToSign() << " Form grade to execute "<< fr.getGradeToExecute() << std::endl;
+ 	os << fr.getName() << 
+	" Form info : grade to sign " << 
+	fr.getGradeToSign() << 
+	" Form grade to execute "<< 
+	fr.getGradeToExecute();
+
+	os << " Form is ";
+	if (fr.getIsSigned())
+		os << "signed ";
+	else
+		os << "not signed ";
+	os << std::endl;
  	return os;
 }
 

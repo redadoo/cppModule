@@ -1,14 +1,47 @@
 #include "Base.hpp"
-#include "AS.hpp"
 
 int GetRandomInt(int low_dist, int high_dist)
 {
   	std::srand( ( unsigned int )std::time( NULL ) );
-    return low_dist + std::rand() % ( high_dist - low_dist );
+	return low_dist + std::rand() % ( high_dist - low_dist );
 }
+
 Base *generate()
 {
-    AS *a = new AS();
+	int random = GetRandomInt(1,3); 
+	if (random == 3)
+		return new A;
+	else if(random == 2)
+		return new B;
+	else
+		return new C;
+}
 
-    return dynamic_cast<Base *>(a);
+void identify(Base* p)
+{
+	if (dynamic_cast<A*>(p))
+		std::cout << "A\n";
+	else if(dynamic_cast<B*>(p))
+		std::cout << "B\n";
+	else
+		std::cout << "C\n";
+}
+
+void identify(Base& p)
+{
+	try {
+		A& a = dynamic_cast<A&>(p);
+		(void)a;
+		std::cout << "A" << std::endl;
+	} catch (std::exception e) {}
+	try {
+		B& b = dynamic_cast<B&>(p);
+		(void)b;
+		std::cout << "B" << std::endl;
+	} catch (std::exception e) {}
+	try {
+		C& c = dynamic_cast<C&>(p);
+		(void)c;
+		std::cout << "C" << std::endl;
+	} catch (std::exception e) {}
 }

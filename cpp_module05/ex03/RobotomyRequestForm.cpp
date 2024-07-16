@@ -5,10 +5,23 @@ RobotomyRequestForm::RobotomyRequestForm(std::string _target) : AForm ("Robotomy
         srand (time(NULL));
 }
 
+RobotomyRequestForm::RobotomyRequestForm(const RobotomyRequestForm& src) : AForm(src), target(src.target)
+{
+}
+
+RobotomyRequestForm& RobotomyRequestForm::operator=(const RobotomyRequestForm& src)
+{
+	if (this == &src)
+		return *this;
+	AForm::operator=(src);
+	target = src.target;
+	return *this;
+}
+
 RobotomyRequestForm::~RobotomyRequestForm()
 {
-
 }
+
 
 void RobotomyRequestForm::execute(Bureaucrat const & executor) const
 {

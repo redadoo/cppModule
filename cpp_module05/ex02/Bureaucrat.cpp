@@ -10,6 +10,23 @@ Bureaucrat::Bureaucrat(std::string _name, int _grade) : name(_name) , grade(_gra
 		throw Bureaucrat::GradeTooHighException();
 }
 
+Bureaucrat::Bureaucrat(const Bureaucrat& src) : name(src.name), grade(src.grade)
+{
+}
+
+Bureaucrat::~Bureaucrat()
+{
+}
+
+Bureaucrat& Bureaucrat::operator=(const Bureaucrat& src)
+{
+	if (this == &src)
+		return *this;
+	grade = src.grade;
+	return *this;
+}
+
+
 std::string Bureaucrat::getName() const
 {
 	return (name);

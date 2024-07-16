@@ -44,6 +44,9 @@ $(OBJDIR)/%.o: %.cpp $(HEADER)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(OPTS) -c $< -o $@
 
+leaks: re
+	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
+
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)
 

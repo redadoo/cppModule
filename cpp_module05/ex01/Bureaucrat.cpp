@@ -52,3 +52,19 @@ std::ostream& operator<<(std::ostream& os, const Bureaucrat& br)
 	os << br.getName() << "bureaucrat grade" << br.getGrade() << std::endl;
 	return os;
 }
+
+Bureaucrat::Bureaucrat(const Bureaucrat& src) : name(src.name), grade(src.grade)
+{
+}
+
+Bureaucrat::~Bureaucrat()
+{
+}
+
+Bureaucrat& Bureaucrat::operator=(const Bureaucrat& src)
+{
+	if (this == &src)
+		return *this;
+	grade = src.grade;
+	return *this;
+}

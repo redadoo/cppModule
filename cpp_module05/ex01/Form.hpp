@@ -12,9 +12,12 @@ class Form
 public:
 
 	Form(std::string name, int _gradeToSign, int _gradeToExecute);
-
+	Form(const Form &other);
+	Form &operator=(const Form& other);
+	~Form();
+	
 	std::string 		getName() const;
-	bool				getIsSigned();
+	bool				getIsSigned() const;
 	int 				getGradeToSign() const;
 	int 				getGradeToExecute() const;
 	void				beSigned(const Bureaucrat &br);
