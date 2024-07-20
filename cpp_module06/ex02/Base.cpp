@@ -2,8 +2,7 @@
 
 int GetRandomInt(int low_dist, int high_dist)
 {
-  	std::srand( ( unsigned int )std::time( NULL ) );
-	return low_dist + std::rand() % ( high_dist - low_dist );
+    return low_dist + std::rand() % ((high_dist + 1) - low_dist);
 }
 
 Base *generate()
