@@ -16,7 +16,7 @@ int main( void )
     }
 
     try {
-        Bureaucrat bureaucrat("ash", 2); // error with 200
+        Bureaucrat bureaucrat("ash", 2);
         ShrubberyCreationForm form1("Shrubbery");
         RobotomyRequestForm form2("Robotomy");
         PresidentialPardonForm form3("President");
