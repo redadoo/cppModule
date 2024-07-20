@@ -89,8 +89,16 @@ void printPseudoLiberal(std::string str)
 {
 	std::cout << "char: " << ERROR_IMPOSSIBLE  << std::endl;
 	std::cout << "int: " << ERROR_IMPOSSIBLE << std::endl;
-    std::cout << "float: " << str  << 'f' << std::endl;
-    std::cout << "double: " << str << std::endl;
+	
+	if (str.compare("-inff") == 0 || str.compare("+inff") == 0 || str.compare("inff") == 0 || str.compare("nanf") == 0)
+		std::cout << "float: " << str << std::endl;
+	else
+		std::cout << "float: " << str << "f" << std::endl;
+
+	if (str.compare("-inff") == 0 || str.compare("+inff") == 0 || str.compare("inff") == 0 || str.compare("nanf") == 0)
+		std::cout << "double: " << str.substr(0, str.length() - 1) << std::endl;
+	else
+		std::cout << "double: " << str << std::endl;
 }
 
 bool IsStringInt(const std::string& str)
@@ -146,7 +154,7 @@ Type GetVarType(const std::string& toConvert)
 {
 	if (toConvert.compare("-inff") == 0 || toConvert.compare("+inff") == 0|| 
 		toConvert.compare("-inf") == 0 || toConvert.compare("+inf") == 0|| 
-		toConvert.compare("nan") == 0)
+		toConvert.compare("nan") == 0 || toConvert.compare("nanf") == 0)
 		return _pseudoLiterals;
 	if (toConvert.length() == 1 && !std::isdigit(toConvert[0]))
 		return _char;

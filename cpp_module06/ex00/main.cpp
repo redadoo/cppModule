@@ -6,11 +6,11 @@ int main(int argc, char** argv)
     
     ScalarConverter::convert(argv[1]);
 
-
-    ScalarConverter::convert("0");
-    std::cout << "\n";
-    ScalarConverter::convert("nan");
-    std::cout << "\n";
-    ScalarConverter::convert("42.0f");
-    std::cout << "\n";
+    // std::cout << "\n";
+    // ScalarConverter::convert("0");
+    // std::cout << "\n";
+    // ScalarConverter::convert("nan");
+    // std::cout << "\n";
+    // ScalarConverter::convert("42.0f");
+    // std::cout << "\n";
 }
