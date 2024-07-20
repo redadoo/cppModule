@@ -10,18 +10,14 @@ int main( void ) {
 	for (size_t i = 0; i < 20; i++)
 	{
 		array[i] = i;
+		std::cout << "elements at " << i << " is " << array[i] << std::endl;
 	}
     
-	size_t arrayLength = sizeof(array) / sizeof(array[0]);
-
-	iter(array,arrayLength,add);
-
+	iter(array, sizeof(array) / sizeof(array[0]),add);
 	std::cout <<"after iter" << std::endl;
 
 	for (size_t i = 0; i < 20; i++)
-	{
 		std::cout << "elements at " << i << " is " << array[i] << std::endl;
-	}
 
 	std::string stringArray[4] = {
 		std::string("string1"),

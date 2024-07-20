@@ -2,6 +2,8 @@
 #define ARRAY_HPP
 
 #include <iostream>
+#include <stdlib.h>     
+#include <time.h>       
 
 template <class T>
 class Array {
