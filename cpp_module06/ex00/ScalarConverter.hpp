@@ -6,12 +6,8 @@
 #include <iostream>
 #include <iomanip>
 
-#define FIXED_FLOAT(x) std::fixed <<std::setprecision(1)<<(x) 
-
 #define ERROR_IMPOSSIBLE "impossible"
 #define ERROR_NON_DISPLAYABLE "Non displayable"
-
-#define MAX_STRING_LENGHT 10
 
 class  ScalarConverter
 {

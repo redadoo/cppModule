@@ -10,6 +10,17 @@ enum Type
 	_none
 };
 
+int countOccurance(const std::string & str, char ch)
+{
+	int nOccurance = 0;
+	int strSize = str.size();
+
+	for(int i = 0; i < strSize; i++)
+		if (str[i] == ch) nOccurance++;
+
+	return nOccurance;
+}
+
 int	stringToInt(const std::string& str)
 {
 	int num;
@@ -37,52 +48,69 @@ double	stringToDouble(const std::string& str)
     return num;
 }
 
+void PrintFloat(float nbr)
+{
+	if (nbr - static_cast<int>(nbr) != 0)
+		std::cout << "float: " << nbr << "f" << std::endl;
+	else
+		std::cout << "float: " << nbr << ".0" <<"f" << std::endl;
+}
+
+void PrintDouble(double nbr)
+{
+	if (nbr - static_cast<int>(nbr) != 0)
+		std::cout << "double: " << nbr << std::endl;
+	else
+		std::cout << "double: " << nbr << ".0" << std::endl;
+}
+
 void literalInt(int nbr)
 {
-	if (std::isprint(nbr))
+	if (nbr>= 32 && nbr <= 126)
 		std::cout << "char: '" << static_cast<char>(nbr)  << "'" << std::endl; 
     else
 		std::cout << "char: " << ERROR_NON_DISPLAYABLE  << std::endl;
 
 	std::cout << "int: " << nbr << std::endl;
-    std::cout << "float: " << FIXED_FLOAT(static_cast<float>(nbr))  << 'f' <<std::endl;
-    std::cout << "double: " << static_cast<double>(nbr) << std::endl;
+	PrintFloat(static_cast<float>(nbr));
+	PrintDouble(static_cast<double>(nbr));
 }
 
 void literalChar(char ch)
 {
-	if (std::isprint(ch))
+	if (ch>= 32 && ch <= 126)
 		std::cout << "char: '" << ch  << "'" << std::endl; 
     else
 		std::cout << "char: " << ERROR_NON_DISPLAYABLE  << std::endl;
 
 	std::cout << "int: " << static_cast<int>(ch) << std::endl;
-    std::cout << "float: " << FIXED_FLOAT(static_cast<float>(ch))  << 'f' <<std::endl;
-    std::cout << "double: " << static_cast<double>(ch) << std::endl;
+	PrintFloat(static_cast<float>(ch));
+	PrintDouble(static_cast<double>(ch));
 }
 
 void literalFloat(float nbr)
 {
-	if (std::isprint(nbr))
+	if (nbr>= 32 && nbr <= 126)
 		std::cout << "char: '" << static_cast<char>(nbr)  << "'" << std::endl; 
     else
 		std::cout << "char: " << ERROR_NON_DISPLAYABLE  << std::endl;
 
 	std::cout << "int: " << static_cast<int>(nbr) << std::endl;
-    std::cout << "float: " << FIXED_FLOAT(static_cast<float>(nbr))  << 'f' << std::endl;
-    std::cout << "double: " << static_cast<double>(nbr) << std::endl;
+	PrintFloat(static_cast<float>(nbr));
+	PrintDouble(static_cast<double>(nbr));
 }
 
 void literalDouble(double nbr)
 {
-	if (std::isprint(nbr))
+	if (nbr>= 32 && nbr <= 126)
 		std::cout << "char: '" << static_cast<char>(nbr)  << "'" << std::endl; 
     else
 		std::cout << "char: " << ERROR_NON_DISPLAYABLE  << std::endl;
 
+
 	std::cout << "int: " << static_cast<int>(nbr) << std::endl;
-    std::cout << "float: " << FIXED_FLOAT(static_cast<float>(nbr))  << 'f' << std::endl;
-    std::cout << "double: " << static_cast<double>(nbr) << std::endl;
+	PrintFloat(static_cast<float>(nbr));
+	PrintDouble(static_cast<double>(nbr));
 }
 
 void printPseudoLiberal(std::string str)
@@ -103,18 +131,20 @@ void printPseudoLiberal(std::string str)
 
 bool IsStringInt(const std::string& str)
 {
-	size_t i = 0;
+	int i = 0;
+	int strLength = str.length();
 
 	if (str[i] == '-' || str[i] == '+')
+	{
 		i++;
+	}
 
-	if (str.length() > MAX_STRING_LENGHT + i)
+	if (strLength > 10 + i)
 		return false;
 
-	while (i < str.length())
+	while (i < strLength)
 	{
-		if (isdigit(str[i]) == 0) 
-			return false;
+		if (!std::isdigit(str[i])) return false;
 		i++;
 	}
 	return true;
@@ -122,32 +152,55 @@ bool IsStringInt(const std::string& str)
 
 bool IsStringFloat(const std::string& str)
 {
-	for (size_t i = 0; i < str.length(); i++)
+	int i = 0;
+	int strLength = str.length();
+
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+
+	while (i < strLength)
 	{
-		if (str[i] == 'f' || str[i] == '.') continue;
-	
+		if (str[i] == 'f' || str[i] == '.')
+		{
+			i++;
+			continue;
+		}
+
 		if (!std::isdigit(str[i])) return false;
+
+		i++;
 	}
-
-	if ((str.find('f') != str.length() - 1) || (str.find('.') == 0))
-		return false;
-
-	return str.find('f') && str.find('.');
+	
+	return 	str.find('f') != std::string::npos 	&& 
+			str.find('.') != std::string::npos 	&&
+			countOccurance(str, '.') == 1		&&
+			countOccurance(str, 'f') == 1		&&
+			str.find('f') == str.length() - 1	&&
+			str.find('.') != str.length() - 2;
 }
 
 bool IsStringDouble(const std::string& str)
 {
-	for (size_t i = 0; i < str.length(); i++)
-	{
-		if (str[i] == '.') continue;
+	int i = 0;
+	int strLength = str.length();
+
+	if (str[i] == '-' || str[i] == '+')
+		i++;
 	
+	while (i < strLength)
+	{
+		if (str[i] == '.')
+		{
+			i++;
+			continue;
+		}
 		if (!std::isdigit(str[i])) return false;
+		i++;
 	}
 
-	if ((str.find('.') == 0))
-		return false;
-
-	return str.find('.');
+	return 	str.find('.') != std::string::npos 	&&
+			countOccurance(str, '.') == 1		&&
+			str.find('.') < str.length() - 1;
 }
 
 Type GetVarType(const std::string& toConvert)

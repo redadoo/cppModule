@@ -3,17 +3,15 @@
 
 int main()
 {
-    Data *data1 = new Data(1,"luca"); 
+	Data data(42, "they not like us");
 
-    uintptr_t ser;
-    ser = Serializer::serialize(data1);
+	uintptr_t raw = Serializer::serialize(&data);
+	std::cout << "Raw: " << raw << std::endl;
+	Data* ptr = Serializer::deserialize(raw);
+	std::cout << "Ptr: " << ptr << std::endl;
 
-    Data *test; 
-    test = Serializer::deserialize(ser);
+	std::cout << "Data: " << ptr->name << " " << ptr->id << std::endl;
 
-    if (test == data1)
-    {
-        std::cout << test->name <<"\n";
-    }
+	return 0;
 
 }
