@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		= template
+NAME 		= MutantStack
 
 CC			= c++ -std=c++98
 FLAGS		= -Wall -Wextra -Werror

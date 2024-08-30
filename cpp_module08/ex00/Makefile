@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		= template
+NAME 		= easyfind
 
 CC			= c++ -std=c++98
 FLAGS		= -Wall -Wextra -Werror

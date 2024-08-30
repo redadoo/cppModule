@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		= template
+NAME 		= Span
 
 CC			= c++ -std=c++98
 FLAGS		= -Wall -Wextra -Werror
@@ -18,11 +18,11 @@ RM			= rm -rf
 
 OBJDIR      = .objFiles
 
-FILES		= main MutantStack 
+FILES		= main Span 
 
 SRC			= $(FILES:=.cpp)
 OBJ			= $(addprefix $(OBJDIR)/, $(FILES:=.o))
-HEADER		= MutantStack.hpp
+HEADER		= Span.hpp
 
 NONE="\033[0m"
 GREEN="\033[32m"

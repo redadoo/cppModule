@@ -2,17 +2,33 @@
 #include <iostream>
 #include <vector>
 
-int main()
-{
-	Span sp = Span(10000);
+int main() {
+    try {
+        Span sp = Span(5);
+        sp.addNumber(6);
+        sp.addNumber(3);
+        sp.addNumber(17);
+        sp.addNumber(9);
+        sp.addNumber(11);
+        
+        std::cout << "Shortest Span: " << sp.shortestSpan() << std::endl;
+        std::cout << "Longest Span: " << sp.longestSpan() << std::endl;
 
-	for (size_t i = 0; i < 10000; i++)
-	{
-		sp.addNumber(i);
-	}
-	
+        Span sp2 = Span(10001);
+        std::vector<int> more_numbers;
 
-	std::cout << sp.shortestSpan() << std::endl;
-	std::cout << sp.longestSpan() << std::endl;
-	return 0;
+		for (size_t i = 0; i < 10000; i++)
+			more_numbers.push_back(i);
+		
+        sp2.addNumbers(more_numbers.begin(), more_numbers.end());
+        sp2.addNumber(10002);
+
+        std::cout << "Shortest Span (sp2): " << sp2.shortestSpan() << std::endl;
+        std::cout << "Longest Span (sp2): " << sp2.longestSpan() << std::endl;
+
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    return 0;
 }
