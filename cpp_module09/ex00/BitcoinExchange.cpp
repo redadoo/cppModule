@@ -1,17 +1,37 @@
 #include "BitcoinExchange.hpp"
 #include <climits>
 
-void BitcoinExchange::InitMultiMap(const std::string &filename, char sep,
-	std::multimap<Date, float> &toFill)
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
 {
-	float	value;
+    this->database = other.database;
+}
 
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
+{
+    if (this != &other)
+        this->database = other.database;
+    return *this;
+}
+
+BitcoinExchange::BitcoinExchange(char *filename)
+{
+	InitMultiMap("data.csv", ',', database);
+	SearchExchangeValue(filename);
+}
+
+BitcoinExchange::~BitcoinExchange() {}
+
+
+
+void BitcoinExchange::InitMultiMap(const std::string &filename, char sep, std::multimap<Date, float> &toFill)
+{
 	std::ifstream inputFile(filename.c_str());
 	if (!inputFile.is_open())
 	{
 		std::cerr << "Failed to open the file." << std::endl;
 		return ;
 	}
+
 	std::string line;
 	while (std::getline(inputFile, line))
 	{
@@ -21,7 +41,7 @@ void BitcoinExchange::InitMultiMap(const std::string &filename, char sep,
 		if (sepPos != std::string::npos)
 		{
 			std::string key = line.substr(0, sepPos);
-			value = std::atof(line.substr(sepPos + 1).c_str());
+			float value = std::atof(line.substr(sepPos + 1).c_str());
 			Date date(key);
 			toFill.insert(std::make_pair(date, value));
 		}
@@ -44,8 +64,6 @@ void	printData(std::multimap<Date, float> test)
 
 void BitcoinExchange::SearchExchangeValue(char *filename)
 {
-	float	value;
-
 	std::multimap<Date, float>::iterator databaseIterator;
 	std::ifstream inputFile(filename);
 	if (!inputFile.is_open())
@@ -62,7 +80,7 @@ void BitcoinExchange::SearchExchangeValue(char *filename)
 		if (sepPos != std::string::npos)
 		{
 			std::string key = line.substr(0, sepPos);
-			value = std::atof(line.substr(sepPos + 1).c_str());
+			float value = std::atof(line.substr(sepPos + 1).c_str());
 			Date date(key);
 			databaseIterator = database.begin();
 			while (databaseIterator != database.end())
@@ -94,16 +112,6 @@ void BitcoinExchange::SearchExchangeValue(char *filename)
 			std::cout << "Error: bad input => " << line << "\n";
 		}
 	}
-}
-
-BitcoinExchange::~BitcoinExchange()
-{
-}
-
-BitcoinExchange::BitcoinExchange(char *filename)
-{
-	InitMultiMap("data.csv", ',', database);
-	SearchExchangeValue(filename);
 }
 
 Date::Date(const std::string &date)

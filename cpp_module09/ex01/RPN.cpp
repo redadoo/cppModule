@@ -2,33 +2,26 @@
 
 bool RPN::CheckError(const std::string& str)
 {
-		if (str.length() > 1)
-			return false;
-		if (std::isdigit(str[0]) == 0)
-		{
-			if (str[0] != '*' && str[0] != '+' && str[0] != '-' && str[0] != '/')
-				return false;
-		}
-		return true;
+	if (str.length() == 1)
+	{
+		char ch = str[0];
+		if (isdigit(ch) || ch == '*' || ch == '+' || ch == '-' || ch == '/')
+			return true;
+	}
+	return false;
 }
 
 bool RPN::ParseArguments(std::string notation)
 {
-	size_t pos = 0;
+	std::istringstream iss(notation);
 	std::string token;
-	while ((pos = notation.find(' ')) != std::string::npos) 
+	while (iss >> token) 
 	{
-		token = notation.substr(0, pos);
-
 		if(!CheckError(token))
 			return false;
 		
 		this->revNotation.push_back(token);
-		notation.erase(0, pos + 1);
 	}
-	if(!CheckError(notation))
-		return false;	
-	this->revNotation.push_back(notation);
 	return true;
 }
 
@@ -39,7 +32,7 @@ void RPN::CalculateResult()
 	{
 		char ch = it->at(0);
 
-		if (ch >= '0' && ch <= '9')
+		if (isdigit(ch))
 		{
 			if (first == -1)
 				first = ch - '0';
@@ -51,16 +44,16 @@ void RPN::CalculateResult()
 			switch (ch)
 			{
 				case '*':
-				result = result * first;
+					result = result * first;
 				break;
 				case '+':
-				result = result + first;
+					result = result + first;
 				break;
 				case '-':
-				result = result - first;
+					result = result - first;
 				break;
 				case '/':
-				result = result / first;
+					result = result / first;
 				break;
 			}
 			first = -1;
@@ -76,6 +69,22 @@ RPN::RPN(const std::string &notation)
 	result = 0;
 	CalculateResult();
 	std::cout << result << std::endl;
+}
+
+RPN::RPN(const RPN &src)
+{
+	this->revNotation = src.revNotation;
+	this->result = src.result;
+}
+
+RPN &RPN::operator=(const RPN &other)
+{
+    if (this != &other)
+	{
+		this->revNotation = other.revNotation;
+		this->result = other.result;
+	}
+    return *this;
 }
 
 RPN::~RPN() {}

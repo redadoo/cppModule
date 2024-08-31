@@ -27,15 +27,18 @@ std::ostream & operator<<( std::ostream & o, Date const & i );
 
 class BitcoinExchange
 {
+public:
+    ~BitcoinExchange();
+    BitcoinExchange(const BitcoinExchange &other);
+    BitcoinExchange &operator=(const BitcoinExchange &other);
+    BitcoinExchange(char *fileName);
+
 private:
     std::multimap<Date, float> database;
 
     void InitMultiMap(const std::string &filename, char sep, std::multimap<Date, float>& toFill);    
     void SearchExchangeValue(char *filename);
 
-public:
-    ~BitcoinExchange();
-    BitcoinExchange(char *fileName);
 };
 
 #endif

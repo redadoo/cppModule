@@ -4,6 +4,11 @@
 
 int main(int argc, char **argv)
 {
-	if (argc != 2) return (1);
+	if (argc != 2) 
+	{
+		std::cerr << "no input file found" << std::endl;
+		return (1);
+	}
+
 	BitcoinExchange exchange(argv[1]);
 }
