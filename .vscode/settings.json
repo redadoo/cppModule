@@ -54,6 +54,7 @@
         "numbers": "cpp",
         "cinttypes": "cpp",
         "map": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "strstream": "cpp"
     }
 }
