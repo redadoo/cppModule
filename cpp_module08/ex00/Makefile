@@ -18,7 +18,7 @@ RM			= rm -rf
 
 OBJDIR      = .objFiles
 
-FILES		= main easyfind 
+FILES		= main 
 
 SRC			= $(FILES:=.cpp)
 OBJ			= $(addprefix $(OBJDIR)/, $(FILES:=.o))

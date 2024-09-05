@@ -14,14 +14,13 @@ int main() {
         std::cout << "Shortest Span: " << sp.shortestSpan() << std::endl;
         std::cout << "Longest Span: " << sp.longestSpan() << std::endl;
 
-        Span sp2 = Span(10001);
+        Span sp2 = Span(100000);
         std::vector<int> more_numbers;
 
-		for (size_t i = 0; i < 10000; i++)
+		for (size_t i = 0; i < 100000; i++)
 			more_numbers.push_back(i);
 		
         sp2.addNumbers(more_numbers.begin(), more_numbers.end());
-        sp2.addNumber(10002);
 
         std::cout << "Shortest Span (sp2): " << sp2.shortestSpan() << std::endl;
         std::cout << "Longest Span (sp2): " << sp2.longestSpan() << std::endl;

@@ -5,7 +5,6 @@ int main()
 {
 
 	std::vector<int> vec;
-	std::vector<int> emptyVec;
 
 	vec.push_back(10);
 	vec.push_back(11);
@@ -20,11 +19,17 @@ int main()
 	
 	vec.clear();
 	
-	if (easyFind(vec, 42) == false)
+	if (easyFind(vec, 11) == false)
 		std::cout << "not found\n";
 
-	if (easyFind(emptyVec, 142) == false)
+	if (easyFind(vec, 142) == false)
 		std::cout << "not found\n";
+
+	vec.push_back(42);
+
+	if (easyFind(vec, 42) == true)
+		std::cout << "found\n";
 
 	return 0;
+
 }
