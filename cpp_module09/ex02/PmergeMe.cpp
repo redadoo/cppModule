@@ -27,6 +27,17 @@ void PmergeMe::PrintNumbers()
 	std::cout << std::endl;	
 }
 
+void PmergeMe::MergeInsertionSort(std::vector<int> &vec)
+{
+	if (vec.size() % 2 != 0)
+	{
+		straggler = vec.back(); 
+		vec.pop_back();
+		isOdd = true;
+	}
+	else
+		isOdd = false;
+}
 
 void PmergeMe::Sort()
 {
