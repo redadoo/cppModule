@@ -27,65 +27,6 @@ void PmergeMe::PrintNumbers()
 	std::cout << std::endl;	
 }
 
-void binaryInsertion(std::vector<int> &main_chain, int element) {
-    int low = 0, high = main_chain.size() - 1;
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        if (main_chain[mid] < element)
-            low = mid + 1;
-        else
-            high = mid - 1;
-    }
-    main_chain.insert(main_chain.begin() + low, element);
-}
-
-void PmergeMe::MergeInsertionSort(std::vector<int> &arr)
-{
-	   // Base case
-    if (arr.size() <= 1) return;
-
-    // Step 1: Pairing and initial sorting
-    std::vector<std::pair<int, int> > pairs;
-    std::vector<int> remaining;
-    for (size_t i = 0; i < arr.size() - 1; i += 2) {
-        if (arr[i] > arr[i + 1])
-            pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
-        else
-            pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
-    }
-    if (arr.size() % 2 != 0) {
-        remaining.push_back(arr.back());
-    }
-
-    // Step 2: Recursive sorting of main chain
-    std::vector<int> main_chain;
-    for (size_t i = 0; i < pairs.size(); ++i) {
-        main_chain.push_back(pairs[i].second);
-    }
-    MergeInsertionSort(main_chain);
-
-    // Step 3: Insert smaller elements in an optimal order
-    static const int insertion_order[] = {1, 3, 2, 5, 4, 11, 10, 9, 8, 7, 6};
-    std::vector<int> smaller_elements;
-    for (size_t i = 0; i < pairs.size(); ++i) {
-        smaller_elements.push_back(pairs[i].first);
-    }
-    if (!remaining.empty()) {
-        smaller_elements.push_back(remaining[0]);
-    }
-
-    for (size_t i = 0; i < smaller_elements.size(); ++i) {
-        binaryInsertion(main_chain, smaller_elements[insertion_order[i] - 1]);
-    }
-
-    // Step 4: Copy the sorted main chain back to the original array
-    arr = main_chain;
-}
-
-void PmergeMe::MergeInsertionSort(std::list<int> &list)
-{
-	(void)list;
-}
 
 void PmergeMe::Sort()
 {
