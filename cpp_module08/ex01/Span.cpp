@@ -59,5 +59,5 @@ unsigned int Span::longestSpan()
 		throw Span::TooFewElements();
 	std::vector<int> tmp = numberList;
 	std::sort(tmp.begin(), tmp.end(), compare);
-	return std::distance(tmp.begin(), tmp.end());
+	return tmp[0] - tmp[tmp.size() - 1];
 }
