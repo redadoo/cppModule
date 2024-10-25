@@ -36,6 +36,9 @@ public:
     void Sort();
     
     PmergeMe(char **args, int argc);
+    PmergeMe(const PmergeMe &src);
+    PmergeMe &operator=(const PmergeMe &src);
+    
     ~PmergeMe();
 };
 

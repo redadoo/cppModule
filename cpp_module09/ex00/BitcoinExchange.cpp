@@ -15,17 +15,15 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 
 BitcoinExchange::BitcoinExchange(char *filename)
 {
-	InitMultiMap("data.csv", ',', database);
+	InitMultiMap();
 	SearchExchangeValue(filename);
 }
 
 BitcoinExchange::~BitcoinExchange() {}
 
-
-
-void BitcoinExchange::InitMultiMap(const std::string &filename, char sep, std::multimap<Date, float> &toFill)
+void BitcoinExchange::InitMultiMap()
 {
-	std::ifstream inputFile(filename.c_str());
+	std::ifstream inputFile(DATABASE_FILENAME);
 	if (!inputFile.is_open())
 	{
 		std::cerr << "Failed to open the file." << std::endl;
@@ -35,82 +33,78 @@ void BitcoinExchange::InitMultiMap(const std::string &filename, char sep, std::m
 	std::string line;
 	while (std::getline(inputFile, line))
 	{
-		if (line == "date,exchange_rate" || line == "date | value")
+		if (line == START_LINE_DATABASE)
 			continue ;
-		std::string::size_type sepPos = line.find(sep);
+
+		std::string::size_type sepPos = line.find(DATABASE_SEPARATOR);
 		if (sepPos != std::string::npos)
 		{
 			std::string key = line.substr(0, sepPos);
-			float value = std::atof(line.substr(sepPos + 1).c_str());
 			Date date(key);
-			toFill.insert(std::make_pair(date, value));
+			float value = std::atof(line.substr(sepPos + 1).c_str());
+			database.insert(std::make_pair(date, value));
 		}
 		else
 		{
 			Date date(line);
 			date.badData = true;
-			toFill.insert(std::make_pair(date, 0));
+			database.insert(std::make_pair(date, 0));
 		}
 	}
 	inputFile.close();
 }
 
-void	printData(std::multimap<Date, float> test)
+void BitcoinExchange::SearchExchangeValue(const char *filename)
 {
-	std::multimap<Date, float>::iterator it;
-	for (it = test.begin(); it != test.end(); ++it)
-		std::cout << it->first << "  " << it->second << "\n";
-}
-
-void BitcoinExchange::SearchExchangeValue(char *filename)
-{
-	std::multimap<Date, float>::iterator databaseIterator;
 	std::ifstream inputFile(filename);
 	if (!inputFile.is_open())
 	{
 		std::cerr << "Failed to open the file." << std::endl;
 		return ;
 	}
+
 	std::string line;
 	while (std::getline(inputFile, line))
 	{
-		if (line == "date,exchange_rate" || line == "date | value")
+		if (line == START_LINE_INPUT)
 			continue ;
-		std::string::size_type sepPos = line.find('|');
+
+		size_t sepPos = line.find('|');
 		if (sepPos != std::string::npos)
-		{
-			std::string key = line.substr(0, sepPos);
-			float value = std::atof(line.substr(sepPos + 1).c_str());
-			Date date(key);
-			databaseIterator = database.begin();
-			while (databaseIterator != database.end())
-			{
-				if (databaseIterator->first > date)
-					break ;
-				++databaseIterator;
-			}
-			if (databaseIterator != database.begin())
-				databaseIterator--;
-			if (value < 0)
-			{
-				std::cout << "Error: not a positive number."
-							<< "\n";
-			}
-			else if (value > 1000)
-			{
-				std::cout << "Error: too large a number."
-							<< "\n";
-			}
-			else
-			{
-				std::cout << date << " => " << value << " = " << value
-					* databaseIterator->second << "\n";
-			}
-		}
+			GetExchange(line, sepPos);
 		else
-		{
 			std::cout << "Error: bad input => " << line << "\n";
+	}
+}
+
+void BitcoinExchange::GetExchange(const std::string& line , const size_t sepPos)
+{
+	std::string key = line.substr(0, sepPos);
+	Date date(key);
+
+	float value = std::atof(line.substr(sepPos + 1).c_str());
+
+	if (value < 0)
+		std::cout << "Error: not a positive number." << std::endl;
+	if (value > 1000)
+		std::cout << "Error: too large a number." << std::endl;
+	else
+	{
+		std::multimap<Date, float>::iterator it;
+
+		for (it = database.begin(); it != database.end(); it++)
+		{
+			if (it->first > date)
+				break;
 		}
+		
+		if (it != database.begin())
+			it--;
+		
+		if (date.badData == true)
+			std::cout << "bad Date format" << std::endl;
+		else
+			std::cout << date << " => " << value << " = " << value * it->second << std::endl;
 	}
 }
 

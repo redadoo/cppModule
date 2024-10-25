@@ -9,6 +9,11 @@
 #include <cstdlib>
 #include <limits>
 
+#define START_LINE_INPUT "date | value"
+#define START_LINE_DATABASE "date,exchange_rate"
+#define DATABASE_FILENAME "data.csv"
+#define DATABASE_SEPARATOR ','
+
 struct Date
 {
     int year;
@@ -36,8 +41,9 @@ public:
 private:
     std::multimap<Date, float> database;
 
-    void InitMultiMap(const std::string &filename, char sep, std::multimap<Date, float>& toFill);    
-    void SearchExchangeValue(char *filename);
+    void InitMultiMap();    
+    void SearchExchangeValue(const char *filename);
+    void GetExchange(const std::string& line, const size_t sepPos);
 
 };
 

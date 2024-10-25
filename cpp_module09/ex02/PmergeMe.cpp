@@ -27,64 +27,88 @@ void PmergeMe::PrintNumbers()
 	std::cout << std::endl;	
 }
 
-void binaryInsertion(std::vector<int> &main_chain, int element) {
-    int low = 0, high = main_chain.size() - 1;
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
-        if (main_chain[mid] < element)
-            low = mid + 1;
-        else
-            high = mid - 1;
-    }
-    main_chain.insert(main_chain.begin() + low, element);
-}
 
 void PmergeMe::MergeInsertionSort(std::vector<int> &arr)
 {
-	   // Base case
-    if (arr.size() <= 1) return;
+	if (arr.size() <= 1)
+		return;
 
-    // Step 1: Pairing and initial sorting
-    std::vector<std::pair<int, int> > pairs;
-    std::vector<int> remaining;
-    for (size_t i = 0; i < arr.size() - 1; i += 2) {
-        if (arr[i] > arr[i + 1])
-            pairs.push_back(std::make_pair(arr[i + 1], arr[i]));
-        else
-            pairs.push_back(std::make_pair(arr[i], arr[i + 1]));
-    }
-    if (arr.size() % 2 != 0) {
-        remaining.push_back(arr.back());
-    }
+	std::vector<int> larger, smaller;
 
-    // Step 2: Recursive sorting of main chain
-    std::vector<int> main_chain;
-    for (size_t i = 0; i < pairs.size(); ++i) {
-        main_chain.push_back(pairs[i].second);
-    }
-    MergeInsertionSort(main_chain);
+	for (std::size_t i = 0; i < arr.size() / 2; ++i)
+	{
+		if (arr[2 * i] > arr[2 * i + 1])
+		{
+			larger.push_back(arr[2 * i]);
+			smaller.push_back(arr[2 * i + 1]);
+		}
+		else
+		{
+			larger.push_back(arr[2 * i + 1]);
+			smaller.push_back(arr[2 * i]);
+		}
+	}
 
-    // Step 3: Insert smaller elements in an optimal order
-    static const int insertion_order[] = {1, 3, 2, 5, 4, 11, 10, 9, 8, 7, 6};
-    std::vector<int> smaller_elements;
-    for (size_t i = 0; i < pairs.size(); ++i) {
-        smaller_elements.push_back(pairs[i].first);
-    }
-    if (!remaining.empty()) {
-        smaller_elements.push_back(remaining[0]);
-    }
+	if (arr.size() % 2 == 1) {
+		smaller.push_back(arr.back());
+	}
 
-    for (size_t i = 0; i < smaller_elements.size(); ++i) {
-        binaryInsertion(main_chain, smaller_elements[insertion_order[i] - 1]);
-    }
+	MergeInsertionSort(larger);
 
-    // Step 4: Copy the sorted main chain back to the original array
-    arr = main_chain;
+	arr.clear();
+	arr.push_back(smaller[0]);
+	arr.insert(arr.end(), larger.begin(), larger.end());
+
+	for (std::size_t i = 1; i < smaller.size(); ++i)
+	{
+		int pos = std::lower_bound(arr.begin(), arr.end(), smaller[i]) - arr.begin();
+		arr.insert(arr.begin() + pos, smaller[i]);
+	}
 }
 
 void PmergeMe::MergeInsertionSort(std::list<int> &list)
 {
-	(void)list;
+	if (list.size() <= 1)
+        return;
+
+    std::list<int> larger, smaller;
+    std::list<int>::iterator it = list.begin();
+
+    while (it != list.end())
+    {
+        int first = *it++;
+        if (it == list.end())
+        {
+            smaller.push_back(first);
+            break;
+        }
+        int second = *it++;
+
+        if (first > second)
+        {
+            larger.push_back(first);
+            smaller.push_back(second);
+        }
+        else
+        {
+            larger.push_back(second);
+            smaller.push_back(first);
+        }
+    }
+
+    MergeInsertionSort(larger);
+
+    list.clear();
+    list.push_back(smaller.front());
+    list.insert(list.end(), larger.begin(), larger.end());
+
+    std::list<int>::iterator smaller_it = ++smaller.begin();
+    for (; smaller_it != smaller.end(); ++smaller_it)
+    {
+        std::list<int>::iterator pos = std::find_if(list.begin(), list.end(), 
+                        [smaller_it](int x) { return *smaller_it < x; });
+        list.insert(pos, *smaller_it);
+    }
 }
 
 void PmergeMe::Sort()
@@ -99,7 +123,14 @@ void PmergeMe::Sort()
 	clock_t end = clock();
 	
 	time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-	std::cout << std::fixed << std::setprecision(10) << "Time to process a range of " << this->vec.size() << " elements with std::vector: " << time << " s" << std::endl;
+	std::cout << std::fixed << std::setprecision(10) << "Time to process a range of " << this->vec.size() << " elements with std::vector is : " << time << " s" << std::endl;
+
+	start = clock();
+	MergeInsertionSort(list);
+	end = clock();
+	
+	time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+	std::cout << std::fixed << std::setprecision(10) << "Time to process a range of " << this->list.size() << " elements with std::list is : " << time << " s" << std::endl;
 }
 
 void PmergeMe::FillContainers(char **args, int argc)
@@ -130,6 +161,7 @@ void PmergeMe::FillContainers(char **args, int argc)
 PmergeMe::PmergeMe(char **args, int argc)
 {
 	FillContainers(args, argc);
+	Sort();
 }
 
 PmergeMe::~PmergeMe() {}
