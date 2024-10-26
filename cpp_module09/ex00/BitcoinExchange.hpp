@@ -25,6 +25,9 @@ struct Date
     Date(const std::string& date);
     bool operator<(const Date& other) const;
     bool operator>(const Date& other) const;
+
+    bool IsValidDate();
+    bool IsLeap();
 };
 
 std::ostream & operator<<( std::ostream & o, Date const & i );

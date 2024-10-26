@@ -102,7 +102,7 @@ void BitcoinExchange::GetExchange(const std::string& line , const size_t sepPos)
 			it--;
 		
 		if (date.badData == true)
-			std::cout << "bad Date format" << std::endl;
+			std::cout << "Error: bad Date format" << std::endl;
 		else
 			std::cout << date << " => " << value << " = " << value * it->second << std::endl;
 	}
@@ -114,11 +114,12 @@ Date::Date(const std::string &date)
 	std::string item;
 	std::getline(ss, item, '-');
 	year = std::atoi(item.c_str());
-	std::getline(ss, item, '-');
+	std ::getline(ss, item, '-');
 	month = std::atoi(item.c_str());
 	std::getline(ss, item, '-');
 	day = std::atoi(item.c_str());
-	this->badData = false;
+
+	this->badData = !IsValidDate();
 }
 
 std::ostream &operator<<(std::ostream &o, Date const &i)
@@ -143,4 +144,33 @@ bool Date::operator<(const Date &other) const
 bool Date::operator>(const Date &other) const
 {
 	return (other < *this);
+}
+
+bool Date::IsValidDate()
+{
+	if (month < 1 || month > 12) 
+		return false; 
+	if (day < 1 || day > 31) 
+		return false; 
+
+	if (month == 2) 
+    { 
+        if (IsLeap()) 
+			return (day <= 29); 
+        else 
+			return (day <= 28); 
+    } 
+
+	if (month == 4 || month == 6 || 
+        month == 9 || month == 11) 
+        return (day <= 30);
+
+	return true;
+}
+
+bool Date::IsLeap()
+{
+    return (((year % 4 == 0)   &&  
+         	(year % 100 != 0)) || 
+         	(year % 400 == 0)); 
 }
