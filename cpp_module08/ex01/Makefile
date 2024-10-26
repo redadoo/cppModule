@@ -44,10 +44,14 @@ $(OBJDIR)/%.o: %.cpp $(HEADER)
 	@mkdir -p $(dir $@)
 	@$(CC) $(FLAGS) $(OPTS) -c $< -o $@
 
+leaks: re
+	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --log-file=leaks.txt ./$(NAME)
+
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)
 
 fclean: clean
 	@$(RM) $(NAME)
+	@$(RM) leaks.txt
 
 re: fclean all

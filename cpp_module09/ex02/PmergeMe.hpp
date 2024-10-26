@@ -13,6 +13,8 @@
 class PmergeMe
 {
 private:
+    bool                isOdd;
+    int                 straggler;
     std::vector< int>   vec;
     std::list< int>     list;
 
