@@ -19,13 +19,13 @@ bool RPN::ParseArguments(const std::string& notation)
 
     while (iss >> token) 
 	{
-        if (!CheckError(token)) 
+        if (!CheckError(token) && token.length() > 1) 
 		{
             std::cerr << "Error" << std::endl;
             return false;
         }
 
-        if (isdigit(token[0]) || (token.length() > 1 && isdigit(token[1]))) 
+        if (isdigit(token[0]) || isdigit(token[1])) 
             stack.push(StringToInt(token));
 		else 
 		{
