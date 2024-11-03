@@ -11,64 +11,76 @@ bool RPN::CheckError(const std::string& str)
 	return false;
 }
 
-bool RPN::ParseArguments(std::string notation)
+bool RPN::ParseArguments(const std::string& notation) 
 {
-	std::istringstream iss(notation);
-	std::string token;
-	while (iss >> token) 
+    std::istringstream iss(notation);
+    std::string token;
+    std::stack<int> stack;
+
+    while (iss >> token) 
 	{
-		if(!CheckError(token))
-			return false;
-		
-		this->revNotation.push_back(token);
-	}
-	return true;
+        if (!CheckError(token)) 
+		{
+            std::cerr << "Error" << std::endl;
+            return false;
+        }
+
+        if (isdigit(token[0]) || (token.length() > 1 && isdigit(token[1]))) 
+            stack.push(StringToInt(token));
+		else 
+		{
+            if (stack.size() < 2) 
+			{
+                std::cerr << "Error" << std::endl;
+                return false;
+            }
+
+            int operand2 = stack.top();
+            stack.pop();
+            int operand1 = stack.top();
+            stack.pop();
+
+            if (token == "+") 
+                stack.push(operand1 + operand2);
+			else if (token == "-") 
+                stack.push(operand1 - operand2);
+			else if (token == "*") 
+                stack.push(operand1 * operand2);
+			else if (token == "/") 
+			{
+                if (operand2 == 0) 
+				{
+                    std::cerr << "Error: Division by zero" << std::endl;
+                    return false;
+                }
+                stack.push(operand1 / operand2);
+            }
+        }
+    }
+
+    if (stack.size() == 1) 
+	{
+        result = stack.top();
+        return true;
+    } 
+	else 
+	{
+        std::cerr << "Error" << std::endl;
+        return false;
+    }
 }
 
-void RPN::CalculateResult()
-{
-	int first = -1;
-	for (std::deque<std::string>::iterator it = revNotation.begin(); it != revNotation.end(); ++it) 
-	{
-		char ch = it->at(0);
-
-		if (isdigit(ch))
-		{
-			if (first == -1)
-				first = ch - '0';
-			else
-				result = ch - '0';
-		}
-		else
-		{
-			switch (ch)
-			{
-				case '*':
-					result = result * first;
-				break;
-				case '+':
-					result = result + first;
-				break;
-				case '-':
-					result = result - first;
-				break;
-				case '/':
-					result = result / first;
-				break;
-			}
-			first = -1;
-		}
-	}
+int RPN::StringToInt(const std::string &str) {
+    std::istringstream iss(str);
+    int num;
+    iss >> num;
+    return num;
 }
 
 RPN::RPN(const std::string &notation)
 {
-	if (!ParseArguments(notation))
-		return;
-
-	result = 0;
-	CalculateResult();
-	std::cout << result << std::endl;
+    if (ParseArguments(notation)) 
+        std::cout << result << std::endl;
 }
 
 RPN::RPN(const RPN &src)

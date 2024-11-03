@@ -4,8 +4,8 @@
 
 #include <string>
 #include <iostream>
-#include <deque>
 #include <sstream>
+#include <stack>
 
 // RPN class for Reverse Polish Notation calculations
 class RPN
@@ -19,15 +19,15 @@ class RPN
 	private:
 		std::deque<std::string> revNotation;
 		int                     result;
-		
+
+		int StringToInt(const std::string &str);
+
+
 		// Checks if the token is a valid number or operator
 		bool CheckError(const std::string &str);
 
 		// Parses the input notation into tokens
-		bool ParseArguments(std::string args);
-
-		// Calculates the result from the parsed notation
-		void CalculateResult();
+		bool ParseArguments(const std::string& args);
 };
 
 
