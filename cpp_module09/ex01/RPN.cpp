@@ -13,74 +13,74 @@ bool RPN::CheckError(const std::string& str)
 
 bool RPN::Resolve(const std::string& notation) 
 {
-    std::istringstream iss(notation);
-    std::string token;
-    std::stack<int> stack;
+	std::istringstream iss(notation);
+	std::string token;
+	std::stack<int> stack;
 
-    while (iss >> token) 
+	while (iss >> token) 
 	{
-        if (!CheckError(token) && token.length() > 1) 
+		if (!CheckError(token) && token.length() > 1) 
 		{
-            std::cerr << "Error" << std::endl;
-            return false;
-        }
+			std::cerr << "Error" << std::endl;
+			return false;
+		}
 
-        if (isdigit(token[0]) || isdigit(token[1])) 
-            stack.push(StringToInt(token));
+		if (isdigit(token[0]) || isdigit(token[1])) 
+			stack.push(StringToInt(token));
 		else 
 		{
-            if (stack.size() < 2) 
+			if (stack.size() < 2) 
 			{
-                std::cerr << "Error" << std::endl;
-                return false;
-            }
+				std::cerr << "Error" << std::endl;
+				return false;
+			}
 
-            int operand2 = stack.top();
-            stack.pop();
-            int operand1 = stack.top();
-            stack.pop();
+			int operand2 = stack.top();
+			stack.pop();
+			int operand1 = stack.top();
+			stack.pop();
 
-            if (token == "+") 
-                stack.push(operand1 + operand2);
+			if (token == "+") 
+				stack.push(operand1 + operand2);
 			else if (token == "-") 
-                stack.push(operand1 - operand2);
+				stack.push(operand1 - operand2);
 			else if (token == "*") 
-                stack.push(operand1 * operand2);
+				stack.push(operand1 * operand2);
 			else if (token == "/") 
 			{
-                if (operand2 == 0) 
+				if (operand2 == 0) 
 				{
-                    std::cerr << "Error: Division by zero" << std::endl;
-                    return false;
-                }
-                stack.push(operand1 / operand2);
-            }
-        }
-    }
+					std::cerr << "Error: Division by zero" << std::endl;
+					return false;
+				}
+				stack.push(operand1 / operand2);
+			}
+		}
+	}
 
-    if (stack.size() == 1) 
+	if (stack.size() == 1) 
 	{
-        result = stack.top();
-        std::cout << result << std::endl;
-        return true;
-    } 
+		result = stack.top();
+		std::cout << result << std::endl;
+		return true;
+	} 
 	else 
 	{
-        std::cerr << "Error" << std::endl;
-        return false;
-    }
+		std::cerr << "Error" << std::endl;
+		return false;
+	}
 }
 
 int RPN::StringToInt(const std::string &str) {
-    std::istringstream iss(str);
-    int num;
-    iss >> num;
-    return num;
+	std::istringstream iss(str);
+	int num;
+	iss >> num;
+	return num;
 }
 
 RPN::RPN(const std::string &notation)
 {
-    Resolve(notation);
+	Resolve(notation);
 }
 
 RPN::RPN(const RPN &src)
@@ -90,9 +90,9 @@ RPN::RPN(const RPN &src)
 
 RPN &RPN::operator=(const RPN &other)
 {
-    if (this != &other)
+	if (this != &other)
 		this->result = other.result;
-    return *this;
+	return *this;
 }
 
 RPN::~RPN() {}

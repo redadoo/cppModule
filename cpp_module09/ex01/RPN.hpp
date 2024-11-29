@@ -17,12 +17,10 @@ class RPN
 		~RPN();
 
 	private:
-		int                     result;
+		int result;
 
 		int StringToInt(const std::string &str);
-
 		bool CheckError(const std::string &str);
-
 		bool Resolve(const std::string& args);
 };
 
