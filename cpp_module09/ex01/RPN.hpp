@@ -17,17 +17,13 @@ class RPN
 		~RPN();
 
 	private:
-		std::deque<std::string> revNotation;
 		int                     result;
 
 		int StringToInt(const std::string &str);
 
-
-		// Checks if the token is a valid number or operator
 		bool CheckError(const std::string &str);
 
-		// Parses the input notation into tokens
-		bool ParseArguments(const std::string& args);
+		bool Resolve(const std::string& args);
 };
 
 

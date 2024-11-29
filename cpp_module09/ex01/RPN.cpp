@@ -11,7 +11,7 @@ bool RPN::CheckError(const std::string& str)
 	return false;
 }
 
-bool RPN::ParseArguments(const std::string& notation) 
+bool RPN::Resolve(const std::string& notation) 
 {
     std::istringstream iss(notation);
     std::string token;
@@ -61,6 +61,7 @@ bool RPN::ParseArguments(const std::string& notation)
     if (stack.size() == 1) 
 	{
         result = stack.top();
+        std::cout << result << std::endl;
         return true;
     } 
 	else 
@@ -79,23 +80,18 @@ int RPN::StringToInt(const std::string &str) {
 
 RPN::RPN(const std::string &notation)
 {
-    if (ParseArguments(notation)) 
-        std::cout << result << std::endl;
+    Resolve(notation);
 }
 
 RPN::RPN(const RPN &src)
 {
-	this->revNotation = src.revNotation;
 	this->result = src.result;
 }
 
 RPN &RPN::operator=(const RPN &other)
 {
     if (this != &other)
-	{
-		this->revNotation = other.revNotation;
 		this->result = other.result;
-	}
     return *this;
 }
 

@@ -14,6 +14,13 @@
 #define DATABASE_FILENAME "data.csv"
 #define DATABASE_SEPARATOR ','
 
+enum error
+{
+    BadDateFormat,
+    NegativeInteger,
+};
+
+
 struct Date
 {
     int year;
@@ -44,7 +51,7 @@ public:
 private:
     std::multimap<Date, float> database;
 
-    void InitMultiMap();    
+    void InitMultiMap();
     void SearchExchangeValue(const char *filename);
     void GetExchange(const std::string& line, const size_t sepPos);
 

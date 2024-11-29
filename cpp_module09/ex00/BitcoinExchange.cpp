@@ -3,14 +3,14 @@
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
 {
-    this->database = other.database;
+	this->database = other.database;
 }
 
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
-    if (this != &other)
-        this->database = other.database;
-    return *this;
+	if (this != &other)
+		this->database = other.database;
+	return *this;
 }
 
 BitcoinExchange::BitcoinExchange(char *filename)
@@ -82,29 +82,49 @@ void BitcoinExchange::GetExchange(const std::string& line , const size_t sepPos)
 	std::string key = line.substr(0, sepPos);
 	Date date(key);
 
-	float value = std::atof(line.substr(sepPos + 1).c_str());
+	std::string valueStr = line.substr(sepPos + 1);
 
-	if (value < 0)
-		std::cout << "Error: not a positive number." << std::endl;
-	if (value > 1000)
-		std::cout << "Error: too large a number." << std::endl;
-	else
+	valueStr.erase(0, valueStr.find_first_not_of(" \t"));
+	valueStr.erase(valueStr.find_last_not_of(" \t") + 1);
+
+	float value = 0.0;
+	std::stringstream ss(valueStr);
+	ss >> value;
+
+	if (ss.fail() || !ss.eof())
 	{
-		std::multimap<Date, float>::iterator it;
+		std::cout << "Error: invalid float value." << std::endl;
+		return;
+	}
 
-		for (it = database.begin(); it != database.end(); it++)
+	try
+	{
+		if (value < 0)
 		{
-			if (it->first > date)
-				break;
+			throw std::runtime_error("Error: not a positive number.");
 		}
-		
-		if (it != database.begin())
-			it--;
-		
-		if (date.badData == true)
-			std::cout << "Error: bad Date format" << std::endl;
+		else if (value > 1000)
+		{
+			throw std::runtime_error("Error: too large a number.");
+		}
 		else
-			std::cout << date << " => " << value << " = " << value * it->second << std::endl;
+		{
+			std::multimap<Date, float>::iterator it = database.lower_bound(date);
+			if (it == database.end() || it->first > date)
+			{
+				if (it != database.begin())
+					--it;
+			}
+
+			if (date.badData)
+				std::cout << "Error: bad Date format" << std::endl;
+			else
+				std::cout << date << " => " << value << " = " << value * it->second << std::endl;
+		}
+	}
+	catch (const std::runtime_error &e)
+	{
+		std::cout << e.what() << std::endl;
 	}
 }
 
@@ -154,23 +174,23 @@ bool Date::IsValidDate()
 		return false; 
 
 	if (month == 2) 
-    { 
-        if (IsLeap()) 
+	{ 
+		if (IsLeap()) 
 			return (day <= 29); 
-        else 
+		else 
 			return (day <= 28); 
-    } 
+	} 
 
 	if (month == 4 || month == 6 || 
-        month == 9 || month == 11) 
-        return (day <= 30);
+		month == 9 || month == 11) 
+		return (day <= 30);
 
 	return true;
 }
 
 bool Date::IsLeap()
 {
-    return (((year % 4 == 0)   &&  
-         	(year % 100 != 0)) || 
-         	(year % 400 == 0)); 
+	return (((year % 4 == 0)   &&  
+		 	(year % 100 != 0)) || 
+		 	(year % 400 == 0)); 
 }
