@@ -45,7 +45,7 @@ $(OBJDIR)/%.o: %.cpp $(HEADER)
 	@$(CC) $(FLAGS) $(OPTS) -c $< -o $@
 
 play:re
-	@./$(NAME) "8 9 * 9 - 9 - 9 - 4 - 1 +"
+	@./$(NAME) "11 2 17 0 16 8 6 15 10 3 21 1 18 9 14 19 12 5 4 20 13 7"
 
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)

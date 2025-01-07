@@ -1,167 +1,209 @@
 #include "PmergeMe.hpp"
 
-int PmergeMe::StringToInt(const std::string& str)
+PmergeMe::PmergeMe(char **args, int argc)
 {
-	for (size_t i = 0; i < str.size(); i++)
+	std::cout << "Unsorted vector: ";
+	FillContainers(args, argc);
+	SortVector();
+}
+
+PmergeMe::~PmergeMe() {}
+
+void PmergeMe::FillContainers(char **args, int argc)
+{
+	for (int i = 1; i < argc; ++i)
 	{
-		if (isdigit(str[i]) == 0)
-			throw NotDigitFound();
+		std::string number(args[i]);
+		std::istringstream tokenStream(number);
+		std::string token;
+
+		while (std::getline(tokenStream, token, ' '))
+		{
+			int n = StringToInt(token);
+			vect.push_back(n);
+			list.push_back(n);
+		}
+	}
+
+	PrintNumbers();
+}
+
+void PmergeMe::SortVector()
+{
+	typedef typename  std::vector<unsigned int> vector;
+	typedef typename  std::vector<unsigned int>::iterator it;
+
+
+	static const unsigned long long jacobsthal_diff[] = 
+	{
+		2u, 2u, 6u, 10u, 22u, 42u, 86u, 170u, 342u, 682u, 1366u,
+		2730u, 5462u, 10922u, 21846u, 43690u, 87382u, 174762u, 349526u, 699050u,
+		1398102u, 2796202u, 5592406u, 11184810u, 22369622u, 44739242u, 89478486u,
+		178956970u, 357913942u, 715827882u, 1431655766u, 2863311530u, 5726623062u,
+		11453246122u, 22906492246u, 45812984490u, 91625968982u, 183251937962u,
+		366503875926u, 733007751850u, 1466015503702u, 2932031007402u, 5864062014806u,
+		11728124029610u, 23456248059222u, 46912496118442u, 93824992236886u, 187649984473770u,
+		375299968947542u, 750599937895082u, 1501199875790165u, 3002399751580331u,
+		6004799503160661u, 12009599006321322u, 24019198012642644u, 48038396025285288u,
+		96076792050570576u, 192153584101141152u, 384307168202282304u, 768614336404564608u,
+		1537228672809129216u, 3074457345618258432u, 6148914691236516864u
+	};
+	(void)jacobsthal_diff;
+
+
+	int pairSize = 1;
+
+	while (static_cast<size_t>(pairSize) < vect.size() / 2)
+	{
+		for (vector::iterator it = vect.begin(); it != vect.end();)
+		{
+			vector::iterator secondPairStartIter = it;
+			if (std::distance(it, vect.end()) < pairSize * 2)
+				break;
+
+			std::advance(secondPairStartIter, pairSize);
+
+			IteratorGroup<vector> firstPair(it, pairSize - 1);;
+			IteratorGroup<vector> secondPair(secondPairStartIter, pairSize - 1);
+			
+			if (firstPair > secondPair)
+				IteratorGroup<vector>::SwapIteratorGroup(firstPair, secondPair);
+
+			int moveIt = pairSize + pairSize; 
+			if (std::distance(it, vect.end()) < moveIt)
+				break;
+
+			std::advance(it, moveIt);
+		}
+		pairSize *= 2;
 	}
 	
-	std::stringstream ss(str);
+	std::cout << "after first sort   ";
+	for (size_t i = 0; i < vect.size(); i++)
+		std::cout << vect[i]<< " ";
+	std::cout << "\n";
+
+	size_t n = std::distance(vect.begin() + (pairSize + 1), vect.end());
+	IteratorGroup<vector> remained(vect.begin() + (pairSize), n);
+
+	std::vector<it> tmp;
+	// IteratorGroup<vector> tmp(vect.begin(), pairSize - 1);
+	// pairSize /= 2;
+	// while (pairSize > 1)
+	// {
+	// 	std::vector<IteratorGroup<vector> > main;
+	// 	IteratorGroup<vector>::FillVectorOfGroup(
+	// 		tmp,
+	// 		main,
+	// 		pairSize
+	// 	);
+
+	// 	std::vector<IteratorGroup<vector> > pend;
+	// 	std::cout << "main pre iter\n";
+	// 	for (size_t i = 0; i < main.size(); i++)
+	// 	{
+	// 		std::cout << main[i] << "\n";
+	// 	}
+	// 	std::cout << "stop pre iter\n";
+	// 	if (main.size() >= 2)
+	// 	{
+	// 		for (size_t i = 2; i < main.size(); i++)
+	// 		{
+	// 			if (i + 1 < main.size() && main[i] < main[i + 1])
+	// 			{
+	// 				std::cout << main[i] << "is smaller then " << main[i + 1] << "\n";
+	// 				pend.push_back(main[i]);
+	// 				main.erase(main.begin() + i);
+	// 			}
+	// 		}
+
+	// 		std::cout << "pend\n";
+	// 		for (size_t i = 0; i < pend.size(); i++)
+	// 		{
+	// 			std::cout << pend[i] << "\n";
+	// 		}
+
+	// 		if (pend.size() == 1)
+	// 		{
+	// 			for (size_t i = 0; i < main.size(); i++)
+	// 			{
+	// 				if (main[i] > pend[0])
+	// 				{
+	// 					main.insert(main.begin() + i, pend[0]);
+	// 					break;
+	// 				}
+	// 			}
+	// 		}
+	// 		else
+	// 		{
+
+	// 		}
+
+	// 		if(static_cast<size_t>(pairSize) <= remained.size)
+	// 		{
+	// 			IteratorGroup<vector> odd(remained.start, pairSize - 1);
+
+	// 			for (size_t i = 0; i < main.size(); i++)
+	// 			{
+	// 				if (main[i] > odd)
+	// 				{
+	// 					std::cout << odd << " odd is smaller then " << main[i] << "\n";
+	// 					main.insert(main.begin() + i, odd);
+	// 					remained.start = remained.start + pairSize;
+	// 					remained.size = remained.size - pairSize;
+	// 					break;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+
+	// 	std::cout << "main post iter\n";
+	// 	for (size_t i = 0; i < main.size(); i++)
+	// 	{
+	// 			std::cout << main[i] << "\n";
+	// 	}
+	// 	std::cout << "stop post iter\n";
+
+	// 	tmp = IteratorGroup<vector>::VectorToGroup(main);
+
+	// 	pairSize /= 2;
+	// }
+}
+
+void PmergeMe::PrintNumbers() const
+{
+	for (size_t i = 0; i < vect.size(); i++)
+		std::cout << vect[i] << " ";
+	std::cout << std::endl;
+}
+
+void PmergeMe::PrintPairs(int pairSize) const
+{
+	for (size_t i = 0; i < vect.size(); ++i)
+	{
+		if (i % pairSize == 0 && i != 0)
+			std::cout << std::endl;
+		std::cout << vect[i] << " ";
+	}
+	std::cout << std::endl;
+}
+
+int PmergeMe::StringToInt(const std::string &str) const
+{
+	for (size_t i = 0; i < str.size(); ++i)
+	{
+		if (!isdigit(str[i]))
+			throw NotDigitFound();
+	}
+
 	int number;
+	std::istringstream ss(str);
 	ss >> number;
+
 	if (ss.fail())
 		throw std::runtime_error("Invalid string to convert to int");
 	if (number < 0)
 		throw FoundNegativeNumber();
-		
+
 	return number;
 }
-
-void PmergeMe::PrintNumbers()
-{
-	std::vector< int>::iterator it1;
-	for (it1 = vec.begin(); it1 != vec.end(); ++it1)
-		std::cout << *it1 << " ";
-	std::cout << std::endl;	
-}
-
-
-void PmergeMe::MergeInsertionSort(std::vector<int> &arr)
-{
-	if (arr.size() <= 1)
-		return;
-
-	std::vector<int> larger, smaller;
-
-	for (std::size_t i = 0; i < arr.size() / 2; ++i)
-	{
-		if (arr[2 * i] > arr[2 * i + 1])
-		{
-			larger.push_back(arr[2 * i]);
-			smaller.push_back(arr[2 * i + 1]);
-		}
-		else
-		{
-			larger.push_back(arr[2 * i + 1]);
-			smaller.push_back(arr[2 * i]);
-		}
-	}
-
-	if (arr.size() % 2 == 1) {
-		smaller.push_back(arr.back());
-	}
-
-	MergeInsertionSort(larger);
-
-	arr.clear();
-	arr.push_back(smaller[0]);
-	arr.insert(arr.end(), larger.begin(), larger.end());
-
-	for (std::size_t i = 1; i < smaller.size(); ++i)
-	{
-		int pos = std::lower_bound(arr.begin(), arr.end(), smaller[i]) - arr.begin();
-		arr.insert(arr.begin() + pos, smaller[i]);
-	}
-}
-
-void PmergeMe::MergeInsertionSort(std::list<int> &list)
-{
-	if (list.size() <= 1)
-        return;
-
-    std::list<int> larger, smaller;
-    std::list<int>::iterator it = list.begin();
-
-    while (it != list.end())
-    {
-        int first = *it++;
-        if (it == list.end())
-        {
-            smaller.push_back(first);
-            break;
-        }
-        int second = *it++;
-
-        if (first > second)
-        {
-            larger.push_back(first);
-            smaller.push_back(second);
-        }
-        else
-        {
-            larger.push_back(second);
-            smaller.push_back(first);
-        }
-    }
-
-    MergeInsertionSort(larger);
-
-    list.clear();
-    list.push_back(smaller.front());
-    list.insert(list.end(), larger.begin(), larger.end());
-
-    std::list<int>::iterator smaller_it = ++smaller.begin();
-    for (; smaller_it != smaller.end(); ++smaller_it)
-    {
-        std::list<int>::iterator pos = std::find_if(list.begin(), list.end(), 
-                        [smaller_it](int x) { return *smaller_it < x; });
-        list.insert(pos, *smaller_it);
-    }
-}
-
-void PmergeMe::Sort()
-{
-	double time;
-
-	std::cout << "numbers pre sort : ";
-	PrintNumbers();
-
-	clock_t start = clock();
-	MergeInsertionSort(vec);
-	clock_t end = clock();
-	
-	time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-	std::cout << std::fixed << std::setprecision(10) << "Time to process a range of " << this->vec.size() << " elements with std::vector is : " << time << " s" << std::endl;
-
-	start = clock();
-	MergeInsertionSort(list);
-	end = clock();
-	
-	time = static_cast<double>(end - start) / CLOCKS_PER_SEC;
-	std::cout << std::fixed << std::setprecision(10) << "Time to process a range of " << this->list.size() << " elements with std::list is : " << time << " s" << std::endl;
-}
-
-void PmergeMe::FillContainers(char **args, int argc)
-{
-	for (int i = 1; i < argc; i++)
-	{
-		std::string number(args[i]);
-		if (number.find(" ") != std::string::npos)
-		{
-			std::istringstream tokenStream(number);
-			std::string token;
-			while (std::getline(tokenStream, token, ' '))
-			{
-				int n = StringToInt(token);
-				vec.push_back(n);
-				list.push_back(n);
-			}
-		}
-		else
-		{
-			int n = StringToInt(number);
-			vec.push_back(n);
-			list.push_back(n);
-		}
-	}
-}
-
-PmergeMe::PmergeMe(char **args, int argc)
-{
-	FillContainers(args, argc);
-	Sort();
-}
-
-PmergeMe::~PmergeMe() {}
