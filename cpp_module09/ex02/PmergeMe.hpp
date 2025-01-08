@@ -11,6 +11,7 @@
 #include <cstddef>      
 #include <algorithm>    
 #include <iterator> 
+#include <ctime> 
 
 template <typename Container>
 struct IteratorGroup
@@ -28,7 +29,10 @@ struct IteratorGroup
 
     IteratorGroup(Container &container, size_t groupSize) 
         : start(container.begin()), size(groupSize) {}
-		
+
+    IteratorGroup(std::vector<unsigned int> tmp) 
+        : start(tmp.begin()), size(tmp.size() - 1) {}
+
 	Iterator GetLast(){
 		return this->start + this->size;
 	};
@@ -39,9 +43,7 @@ struct IteratorGroup
 
 	static void SwapIteratorGroup(IteratorGroup &first, IteratorGroup &second);
 	static void FillVectorOfGroup(IteratorGroup &cont, std::vector<IteratorGroup<Container> > &toFill, size_t groupsSize);
-	static void FillVectorOfGroup(Container &cont, std::vector<IteratorGroup<Container> > &toFill, size_t groupsSize);
-	static void DivideGroup(std::vector<IteratorGroup<Container> > &toDivide, size_t groupsSize);
-	static IteratorGroup<Container> VectorToGroup(std::vector<IteratorGroup<Container> > &toCopy);
+	static void VectorToGroup(IteratorGroup<Container> &con, std::vector<IteratorGroup<Container> > &toCopy);
 
 };
 
@@ -62,7 +64,9 @@ private:
 
 	void FillContainers(char **args, int argc);
 	void SortVector();
-	void PrintNumbers() const;
+	void SortList();
+	void PrintVector() const;
+	void PrintList() const;
 	void PrintPairs(int pairSize) const;
 	int StringToInt(const std::string &str) const;
 
@@ -110,8 +114,12 @@ bool IteratorGroup<T>::operator==(const IteratorGroup &other) const
 template <typename T>
 bool IteratorGroup<T>::operator>(const IteratorGroup &other) const
 {
+	// std::cout << "this : " << *this << " other " << other << "\n";
+
 	unsigned int firstValue = *(this->start + this->size);
 	unsigned int secondValue = *(other.start + other.size);
+
+	// std::cout << " firstValue " << firstValue << " secondValue " << secondValue << "\n";
 
 	return firstValue > secondValue;
 }
@@ -121,7 +129,7 @@ bool IteratorGroup<T>::operator<(const IteratorGroup &other) const
 {
 	unsigned int firstValue = *(this->start + this->size);
 	unsigned int secondValue = *(other.start + other.size);
-
+	// std::cout << " firstValue " << firstValue << " secondValue " << secondValue << "\n";
 	return firstValue < secondValue;
 }
 
@@ -141,10 +149,6 @@ void IteratorGroup<T>::SwapIteratorGroup(IteratorGroup &first, IteratorGroup &se
 template <typename T>
 inline void IteratorGroup<T>::FillVectorOfGroup(IteratorGroup &cont,  std::vector<IteratorGroup<T> > &toFill , size_t groupsSize)
 {
-	if (toFill.size() == 0)
-	{
-		
-	}
 	size_t rest = 0;
 	while (rest <= cont.size)
 	{
@@ -154,24 +158,11 @@ inline void IteratorGroup<T>::FillVectorOfGroup(IteratorGroup &cont,  std::vecto
 }
 
 template <typename Container>
-inline IteratorGroup<Container> IteratorGroup<Container>::VectorToGroup(std::vector<IteratorGroup<Container> > &toCopy)
+inline void IteratorGroup<Container>::VectorToGroup(IteratorGroup<Container> &con, std::vector<IteratorGroup<Container> > &toCopy)
 {
+	std::vector<unsigned int>tmp;
 	for (size_t i = 0; i < toCopy.size(); i++)
-	{
-		
-	}
-	
-	(void)toCopy;
-    return IteratorGroup<Container>();
-}
-
-template <typename T>
-inline void IteratorGroup<T>::FillVectorOfGroup(T &cont,  std::vector<IteratorGroup<T> > &toFill , size_t groupsSize)
-{
-	size_t rest = 0;
-	while (rest <= cont.size())
-	{
-		toFill.push_back(IteratorGroup<T>(cont.begin() + rest, groupsSize - 1));
-		rest += groupsSize;
-	}
+		tmp.insert(tmp.end(), toCopy[i].start, toCopy[i].start + (toCopy[i].size + 1));
+	con.start = tmp.begin();
+	con.size = tmp.size() - 1;
 }

@@ -2,9 +2,16 @@
 
 PmergeMe::PmergeMe(char **args, int argc)
 {
-	std::cout << "Unsorted vector: ";
 	FillContainers(args, argc);
+	std::cout << "vector before sort: ";
+	PrintVector();
+	std::clock_t startVector2 = std::clock();
 	SortVector();
+	std::clock_t endVector2 = std::clock();
+	double vectorTime2 = 1000000.0 * (endVector2 - startVector2) / CLOCKS_PER_SEC;
+	std::cout << "Time taken by fordJohnson sort (std::vector): " << vectorTime2 << " microseconds\n\n\n";
+	std::cout << "vector after sort: ";
+	PrintVector();
 }
 
 PmergeMe::~PmergeMe() {}
@@ -20,22 +27,18 @@ void PmergeMe::FillContainers(char **args, int argc)
 		while (std::getline(tokenStream, token, ' '))
 		{
 			int n = StringToInt(token);
-			vect.push_back(n);
-			list.push_back(n);
+			this->vect.push_back(n);
+			this->list.push_back(n);
 		}
 	}
-
-	PrintNumbers();
 }
 
 void PmergeMe::SortVector()
 {
+	// typedef typename  std::vector<unsigned int>::iterator it;
 	typedef typename  std::vector<unsigned int> vector;
-	typedef typename  std::vector<unsigned int>::iterator it;
 
-
-	static const unsigned long long jacobsthal_diff[] = 
-	{
+	static const unsigned long long jacobsthal_diff[] = {
 		2u, 2u, 6u, 10u, 22u, 42u, 86u, 170u, 342u, 682u, 1366u,
 		2730u, 5462u, 10922u, 21846u, 43690u, 87382u, 174762u, 349526u, 699050u,
 		1398102u, 2796202u, 5592406u, 11184810u, 22369622u, 44739242u, 89478486u,
@@ -48,9 +51,7 @@ void PmergeMe::SortVector()
 		96076792050570576u, 192153584101141152u, 384307168202282304u, 768614336404564608u,
 		1537228672809129216u, 3074457345618258432u, 6148914691236516864u
 	};
-	(void)jacobsthal_diff;
-
-
+	
 	int pairSize = 1;
 
 	while (static_cast<size_t>(pairSize) < vect.size() / 2)
@@ -67,7 +68,9 @@ void PmergeMe::SortVector()
 			IteratorGroup<vector> secondPair(secondPairStartIter, pairSize - 1);
 			
 			if (firstPair > secondPair)
+			{
 				IteratorGroup<vector>::SwapIteratorGroup(firstPair, secondPair);
+			}
 
 			int moveIt = pairSize + pairSize; 
 			if (std::distance(it, vect.end()) < moveIt)
@@ -78,103 +81,147 @@ void PmergeMe::SortVector()
 		pairSize *= 2;
 	}
 	
-	std::cout << "after first sort   ";
-	for (size_t i = 0; i < vect.size(); i++)
-		std::cout << vect[i]<< " ";
-	std::cout << "\n";
-
 	size_t n = std::distance(vect.begin() + (pairSize + 1), vect.end());
 	IteratorGroup<vector> remained(vect.begin() + (pairSize), n);
 
-	std::vector<it> tmp;
-	// IteratorGroup<vector> tmp(vect.begin(), pairSize - 1);
-	// pairSize /= 2;
-	// while (pairSize > 1)
+	IteratorGroup<vector> tmp(vect.begin(), pairSize - 1);
+	pairSize /= 2;
+	std::vector<unsigned int>tmp2;
+	while (pairSize > 0)
+	{
+		std::vector<IteratorGroup<vector> > main;
+		IteratorGroup<vector>::FillVectorOfGroup(
+			tmp,
+			main,
+			pairSize
+		);
+
+		std::vector<IteratorGroup<vector> > pend;
+
+		if (main.size() >= 2)
+		{
+			for (size_t i = 2; i < main.size(); i++)
+			{
+				if (i + 1 < main.size() && main[i] < main[i + 1])
+				{
+					pend.push_back(main[i]);
+					main.erase(main.begin() + i);
+				}
+			}
+
+			if (pend.size() == 1)
+			{
+				for (size_t i = 0; i < main.size(); i++)
+				{
+					if (main[i] > pend[0])
+					{
+						main.insert(main.begin() + i, pend[0]);
+						break;
+					}
+				}
+			}
+			else if(pend.size() > 0)
+			{
+				int indexJacob = 0;
+
+				while (pend.size() > 0)
+				{
+					if (indexJacob < 0 || indexJacob > 63)
+						break;
+
+					int index = jacobsthal_diff[indexJacob] - 1;
+					(void)index;
+
+					for (size_t i = 0; i < main.size(); i++)
+					{
+						if (index < 0)
+							break;
+
+						if (static_cast<size_t>(index) <= pend.size() && main[i] > pend[index])
+						{
+							main.insert(main.begin() + i, pend[index]);
+							pend.erase(pend.begin() + index);
+							index--;
+							i = -1;
+						}
+					}
+					indexJacob++;
+				}
+			}
+
+			if(static_cast<size_t>(pairSize) <= remained.size + 1)
+			{
+				IteratorGroup<vector> odd(remained.start, pairSize - 1);
+				for (size_t i = 0; i < main.size(); i++)
+				{
+					if (main[i] > odd)
+					{
+						main.insert(main.begin() + i, odd);
+						remained.start = remained.start + pairSize;
+						remained.size = remained.size - pairSize;
+						break;
+					}
+				}
+			}
+		}
+		tmp2.clear();
+		for (size_t i = 0; i < main.size(); i++)
+			tmp2.insert(tmp2.end(), main[i].start, main[i].start + (main[i].size + 1));
+
+		vect = tmp2;
+		tmp.start = vect.begin();
+		tmp.size = vect.size() - 1;
+		pairSize /= 2;
+	}
+}
+
+void PmergeMe::SortList()
+{
+	// typedef typename  std::list<unsigned int> list_unsigned;
+
+	// int pairSize = 1;
+
+	// while (static_cast<size_t>(pairSize) < list.size() / 2)
 	// {
-	// 	std::vector<IteratorGroup<vector> > main;
-	// 	IteratorGroup<vector>::FillVectorOfGroup(
-	// 		tmp,
-	// 		main,
-	// 		pairSize
-	// 	);
-
-	// 	std::vector<IteratorGroup<vector> > pend;
-	// 	std::cout << "main pre iter\n";
-	// 	for (size_t i = 0; i < main.size(); i++)
+	// 	for (list_unsigned::iterator it = list.begin(); it != list.end();)
 	// 	{
-	// 		std::cout << main[i] << "\n";
+	// 		list_unsigned::iterator secondPairStartIter = it;
+	// 		if (std::distance(it, list.end()) < pairSize * 2)
+	// 			break;
+
+	// 		std::advance(secondPairStartIter, pairSize);
+
+	// 		IteratorGroup<list_unsigned> firstPair(it, pairSize - 1);;
+	// 		IteratorGroup<list_unsigned> secondPair(secondPairStartIter, pairSize - 1);
+			
+	// 		if (firstPair > secondPair)
+	// 		{
+	// 			IteratorGroup<list_unsigned>::SwapIteratorGroup(firstPair, secondPair);
+	// 		}
+
+	// 		int moveIt = pairSize + pairSize; 
+	// 		if (std::distance(it, list.end()) < moveIt)
+	// 			break;
+
+	// 		std::advance(it, moveIt);
 	// 	}
-	// 	std::cout << "stop pre iter\n";
-	// 	if (main.size() >= 2)
-	// 	{
-	// 		for (size_t i = 2; i < main.size(); i++)
-	// 		{
-	// 			if (i + 1 < main.size() && main[i] < main[i + 1])
-	// 			{
-	// 				std::cout << main[i] << "is smaller then " << main[i + 1] << "\n";
-	// 				pend.push_back(main[i]);
-	// 				main.erase(main.begin() + i);
-	// 			}
-	// 		}
-
-	// 		std::cout << "pend\n";
-	// 		for (size_t i = 0; i < pend.size(); i++)
-	// 		{
-	// 			std::cout << pend[i] << "\n";
-	// 		}
-
-	// 		if (pend.size() == 1)
-	// 		{
-	// 			for (size_t i = 0; i < main.size(); i++)
-	// 			{
-	// 				if (main[i] > pend[0])
-	// 				{
-	// 					main.insert(main.begin() + i, pend[0]);
-	// 					break;
-	// 				}
-	// 			}
-	// 		}
-	// 		else
-	// 		{
-
-	// 		}
-
-	// 		if(static_cast<size_t>(pairSize) <= remained.size)
-	// 		{
-	// 			IteratorGroup<vector> odd(remained.start, pairSize - 1);
-
-	// 			for (size_t i = 0; i < main.size(); i++)
-	// 			{
-	// 				if (main[i] > odd)
-	// 				{
-	// 					std::cout << odd << " odd is smaller then " << main[i] << "\n";
-	// 					main.insert(main.begin() + i, odd);
-	// 					remained.start = remained.start + pairSize;
-	// 					remained.size = remained.size - pairSize;
-	// 					break;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-
-	// 	std::cout << "main post iter\n";
-	// 	for (size_t i = 0; i < main.size(); i++)
-	// 	{
-	// 			std::cout << main[i] << "\n";
-	// 	}
-	// 	std::cout << "stop post iter\n";
-
-	// 	tmp = IteratorGroup<vector>::VectorToGroup(main);
-
-	// 	pairSize /= 2;
+	// 	pairSize *= 2;
 	// }
 }
 
-void PmergeMe::PrintNumbers() const
+void PmergeMe::PrintVector() const
 {
 	for (size_t i = 0; i < vect.size(); i++)
 		std::cout << vect[i] << " ";
 	std::cout << std::endl;
+}
+
+void PmergeMe::PrintList() const
+{
+    for (std::list<unsigned int>::const_iterator it = this->list.begin(); it != this->list.end(); ++it) {
+        std::cout << *it << " ";
+    }
+    std::cout << std::endl;
 }
 
 void PmergeMe::PrintPairs(int pairSize) const
