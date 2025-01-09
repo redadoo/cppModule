@@ -40,6 +40,7 @@ struct IteratorGroup
 
 	static void SwapIteratorGroup(IteratorGroup &first, IteratorGroup &second);
 	static void FillVectorOfGroup(IteratorGroup &cont, std::vector<IteratorGroup<Container> > &toFill, size_t groupsSize);
+	static void FillDequeOfGroup(IteratorGroup &cont, std::deque<IteratorGroup<Container> > &toFill, size_t groupsSize);
 	static void VectorToGroup(IteratorGroup<Container> &con, std::vector<IteratorGroup<Container> > &toCopy);
 
 };
@@ -62,11 +63,17 @@ private:
 	std::deque<unsigned int> deq;
 
 	void FillContainers(char **args, int argc);
+	int StringToInt(const std::string &str) const;
+	
+	void SortDeque();
+	void PrintDeque() const;
+	int	 SortDequePairs(int pairSize);
+	void MergeInsertionDeque(int pairSize, int oddSize);
+
 	void SortVector();
 	void PrintVector() const;
-	int SortVectorPairs(int pairSize);
-	void MergeInsertion(int pairSize, int oddSize);
-	int StringToInt(const std::string &str) const;
+	int	 SortVectorPairs(int pairSize);
+	void MergeInsertionVector(int pairSize, int oddSize);
 
 	class FoundNegativeNumber : public std::exception
 	{
@@ -138,6 +145,17 @@ void IteratorGroup<T>::SwapIteratorGroup(IteratorGroup &first, IteratorGroup &se
 
 template <typename T>
 inline void IteratorGroup<T>::FillVectorOfGroup(IteratorGroup &cont,  std::vector<IteratorGroup<T> > &toFill , size_t groupsSize)
+{
+	size_t rest = 0;
+	while (rest <= cont.size)
+	{
+		toFill.push_back(IteratorGroup<T>(cont.start + rest, groupsSize - 1));
+		rest += groupsSize;
+	}
+}
+
+template <typename T>
+inline void IteratorGroup<T>::FillDequeOfGroup(IteratorGroup &cont,  std::deque<IteratorGroup<T> > &toFill , size_t groupsSize)
 {
 	size_t rest = 0;
 	while (rest <= cont.size)

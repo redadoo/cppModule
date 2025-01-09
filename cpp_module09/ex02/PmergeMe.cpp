@@ -42,13 +42,180 @@ void PmergeMe::Sort()
 {
 	std::cout << "before: ";
 	PrintVector();
+	std::clock_t startVector1 = std::clock();
+	SortDeque();
+	std::clock_t endVector1 = std::clock();
+
 	std::clock_t startVector2 = std::clock();
 	SortVector();
 	std::clock_t endVector2 = std::clock();
+	
+	double vectorTime1 = 1000000.0 * (endVector1 - startVector1) / CLOCKS_PER_SEC;
 	double vectorTime2 = 1000000.0 * (endVector2 - startVector2) / CLOCKS_PER_SEC;
+	
 	std::cout << "after: ";
 	PrintVector();
-	std::cout << "Time taken by fordJohnson sort (std::vector): " << vectorTime2 << " microseconds\n\n\n";
+	
+	std::cout << "\n\nTime taken by fordJohnson sort (std::deque): " << vectorTime1 << " microseconds\n";
+	std::cout << "Time taken by fordJohnson sort (std::vector): " << vectorTime2 << " microseconds\n";
+}
+
+void PmergeMe::SortDeque()
+{
+	int pairSize = 1;
+	int oddSize = 0;
+	
+	while ((deq.size() == 2 && pairSize == 1) || static_cast<size_t>(pairSize * 2) < deq.size())
+	{
+		oddSize = SortDequePairs(pairSize);
+		pairSize *= 2;
+	}
+	if (deq.size() == 2)
+		return;
+	MergeInsertionDeque(pairSize, oddSize);
+}
+
+void PmergeMe::PrintDeque() const
+{
+	for (size_t i = 0; i < deq.size(); i++)
+		std::cout << deq[i] << " ";
+	std::cout << std::endl;
+}
+
+int PmergeMe::SortDequePairs(int pairSize)
+{
+	int dist = 0;
+	
+	typedef typename  std::deque<unsigned int> deque;
+
+	for (deque::iterator it = deq.begin(); it != deq.end();)
+	{
+		deque::iterator secondPairStartIter = it;
+
+		dist = std::distance(it, deq.end()); 
+		if (dist < pairSize * 2)
+			break;
+
+		std::advance(secondPairStartIter, pairSize);
+
+		IteratorGroup<deque> firstPair(it, pairSize - 1);;
+		IteratorGroup<deque> secondPair(secondPairStartIter, pairSize - 1);
+		
+		if (firstPair > secondPair)
+			IteratorGroup<deque>::SwapIteratorGroup(firstPair, secondPair);
+
+		int moveIt = pairSize + pairSize; 
+		dist = std::distance(it, deq.end()); 
+		if (dist < moveIt)
+			break;
+
+		std::advance(it, moveIt);
+
+		dist = 0;
+	}
+	return dist;
+}
+
+void PmergeMe::MergeInsertionDeque(int pairSize, int oddSize)
+{
+	typedef typename  std::deque<unsigned int> deque;
+
+	IteratorGroup<deque> remained(deq.begin() + ((deq.size()) - oddSize), oddSize - 1);
+	IteratorGroup<deque> tmp(deq.begin(), (deq.size() - 1) - oddSize);
+	pairSize /= 2;
+	std::deque<unsigned int>tmp2;
+	while (pairSize > 0)
+	{
+		std::deque<IteratorGroup<deque> > main;
+		IteratorGroup<deque>::FillDequeOfGroup(
+			tmp,
+			main,
+			pairSize
+		);
+
+		std::deque<IteratorGroup<deque> > pend;
+
+		if (main.size() >= 2)
+		{
+			for (size_t i = 2; i < main.size(); i++)
+			{
+				if (i + 1 < main.size() && main[i] < main[i + 1])
+				{
+					pend.push_back(main[i]);
+					main.erase(main.begin() + i);
+				}
+			}
+			if (pend.size() == 1)
+			{
+				for (size_t i = 0; i < main.size(); i++)
+				{
+					if (main[i] > pend[0])
+					{
+						main.insert(main.begin() + i, pend[0]);
+						break;
+					}
+				}
+			}
+			else if(pend.size() > 0)
+			{
+				int indexJacob = 0;
+				while (pend.size() > 0)
+				{
+					if (indexJacob < 0 || indexJacob > 63)
+						break;
+
+					unsigned long long  index = jacobsthal_diff[indexJacob] - 1;
+
+					for (size_t i = 0; i < main.size(); i++)
+					{
+						if (pend.size() == 0)
+							break;
+						if (index < pend.size() && main[i] > pend[index])
+						{
+							if (pend.size() == 1)
+							{
+								main.insert(main.begin() + i, pend[0]);
+								pend.erase(pend.begin());
+							}
+							else
+							{
+								main.insert(main.begin() + i, pend[index]);
+								pend.erase(pend.begin() + index);
+							}
+							index--;
+							i = -1;
+						}
+					}
+					indexJacob++;
+				}
+			}
+			if(static_cast<size_t>(pairSize) <= remained.size + 1)
+			{
+				IteratorGroup<deque> odd(remained.start, pairSize - 1);
+				size_t i = 0;
+				for (; i < main.size(); i++)
+				{
+					if (main[i] > odd)
+					{
+						main.insert(main.begin() + i, odd);
+						break;
+					}
+				}
+				if (i == main.size())
+					main.insert(main.end(), odd);
+
+				remained.start = remained.start + pairSize;
+				remained.size = remained.size - pairSize;
+			}
+		}
+		tmp2.clear();
+		for (size_t i = 0; i < main.size(); i++)
+			tmp2.insert(tmp2.end(), main[i].start, main[i].start + (main[i].size + 1));
+		deq = tmp2;
+		tmp.start = deq.begin();
+		tmp.size = deq.size() - 1;
+		pairSize /= 2;
+	}
 }
 
 void PmergeMe::SortVector()
@@ -56,13 +223,15 @@ void PmergeMe::SortVector()
 	int pairSize = 1;
 	int oddSize = 0;
 	
-	while (static_cast<size_t>(pairSize * 2) < vect.size())
+	while ((vect.size() == 2 && pairSize == 1) || static_cast<size_t>(pairSize * 2) < vect.size())
 	{
 		oddSize = SortVectorPairs(pairSize);
 		pairSize *= 2;
 	}
-
-	MergeInsertion(pairSize, oddSize);
+	if (vect.size() == 2)
+		return;
+	
+	MergeInsertionVector(pairSize, oddSize);
 }
 
 void PmergeMe::PrintVector() const
@@ -100,11 +269,13 @@ int PmergeMe::SortVectorPairs(int pairSize)
 			break;
 
 		std::advance(it, moveIt);
+
+		dist = 0;
 	}
 	return dist;
 }
 
-void PmergeMe::MergeInsertion(int pairSize, int oddSize)
+void PmergeMe::MergeInsertionVector(int pairSize, int oddSize)
 {
 	typedef typename  std::vector<unsigned int> vector;
 
@@ -183,16 +354,20 @@ void PmergeMe::MergeInsertion(int pairSize, int oddSize)
 			if(static_cast<size_t>(pairSize) <= remained.size + 1)
 			{
 				IteratorGroup<vector> odd(remained.start, pairSize - 1);
-				for (size_t i = 0; i < main.size(); i++)
+				size_t i = 0;
+				for (; i < main.size(); i++)
 				{
 					if (main[i] > odd)
 					{
 						main.insert(main.begin() + i, odd);
-						remained.start = remained.start + pairSize;
-						remained.size = remained.size - pairSize;
 						break;
 					}
 				}
+				if (i == main.size())
+					main.insert(main.end(), odd);
+
+				remained.start = remained.start + pairSize;
+				remained.size = remained.size - pairSize;
 			}
 		}
 		
@@ -205,7 +380,6 @@ void PmergeMe::MergeInsertion(int pairSize, int oddSize)
 		tmp.size = vect.size() - 1;
 		pairSize /= 2;
 	}
-
 }
 
 int PmergeMe::StringToInt(const std::string &str) const
