@@ -3,15 +3,12 @@
 
 #include <iostream>
 #include <vector>
-#include <list>
+#include <deque>
 #include <sstream>
 #include <iterator>
 #include <stdexcept>
-#include <iomanip>
-#include <cstddef>      
 #include <algorithm>    
-#include <iterator> 
-#include <ctime> 
+#include <ctime>
 
 template <typename Container>
 struct IteratorGroup
@@ -59,15 +56,16 @@ std::ostream& operator<<(std::ostream &o, const IteratorGroup<T> &i)
 class PmergeMe
 {
 private:
+	static const unsigned long long jacobsthal_diff[];
+	
 	std::vector<unsigned int> vect;
-	std::list<unsigned int> list;
+	std::deque<unsigned int> deq;
 
 	void FillContainers(char **args, int argc);
 	void SortVector();
-	void SortList();
 	void PrintVector() const;
-	void PrintList() const;
-	void PrintPairs(int pairSize) const;
+	int SortVectorPairs(int pairSize);
+	void MergeInsertion(int pairSize, int oddSize);
 	int StringToInt(const std::string &str) const;
 
 	class FoundNegativeNumber : public std::exception
@@ -85,6 +83,8 @@ private:
 public:
 	PmergeMe(char **args, int argc);
 	~PmergeMe();
+
+	void Sort();
 };
 
 #endif
@@ -114,13 +114,8 @@ bool IteratorGroup<T>::operator==(const IteratorGroup &other) const
 template <typename T>
 bool IteratorGroup<T>::operator>(const IteratorGroup &other) const
 {
-	// std::cout << "this : " << *this << " other " << other << "\n";
-
 	unsigned int firstValue = *(this->start + this->size);
 	unsigned int secondValue = *(other.start + other.size);
-
-	// std::cout << " firstValue " << firstValue << " secondValue " << secondValue << "\n";
-
 	return firstValue > secondValue;
 }
 
@@ -129,7 +124,6 @@ bool IteratorGroup<T>::operator<(const IteratorGroup &other) const
 {
 	unsigned int firstValue = *(this->start + this->size);
 	unsigned int secondValue = *(other.start + other.size);
-	// std::cout << " firstValue " << firstValue << " secondValue " << secondValue << "\n";
 	return firstValue < secondValue;
 }
 
@@ -137,13 +131,9 @@ template <typename T>
 void IteratorGroup<T>::SwapIteratorGroup(IteratorGroup &first, IteratorGroup &second)
 {
 	if (first.size == 0 && second.size == 0)
-	{
 		_iter_swap(first.start, second.start);
-	}
 	else
-	{
 		_swap_ranges(first.start, first.start + first.size + 1, second.start);
-	}
 }
 
 template <typename T>
