@@ -13,26 +13,16 @@
 template <typename Container>
 struct IteratorGroup
 {
-    typedef typename Container::iterator Iterator;
+	typedef typename Container::iterator Iterator;
 
 	Iterator start;
 	size_t size;      
 
-    IteratorGroup()
-        : size(0) {}
+	IteratorGroup();
+	IteratorGroup(Iterator start, size_t groupSize);
+	IteratorGroup(Container &container, size_t groupSize);
 
-    IteratorGroup(Iterator start, size_t groupSize)
-        : start(start), size(groupSize) {}
-
-    IteratorGroup(Container &container, size_t groupSize) 
-        : start(container.begin()), size(groupSize) {}
-
-    IteratorGroup(std::vector<unsigned int> tmp) 
-        : start(tmp.begin()), size(tmp.size() - 1) {}
-
-	Iterator GetLast(){
-		return this->start + this->size;
-	};
+	Iterator GetLast();
 
 	bool operator==(const IteratorGroup &other) const;
 	bool operator>(const IteratorGroup &other) const;
@@ -41,18 +31,34 @@ struct IteratorGroup
 	static void SwapIteratorGroup(IteratorGroup &first, IteratorGroup &second);
 	static void FillVectorOfGroup(IteratorGroup &cont, std::vector<IteratorGroup<Container> > &toFill, size_t groupsSize);
 	static void FillDequeOfGroup(IteratorGroup &cont, std::deque<IteratorGroup<Container> > &toFill, size_t groupsSize);
-	static void VectorToGroup(IteratorGroup<Container> &con, std::vector<IteratorGroup<Container> > &toCopy);
 
 };
 
 template <typename T>
-std::ostream& operator<<(std::ostream &o, const IteratorGroup<T> &i) 
-{
-	for (size_t idx = 0; idx < i.size + 1; ++idx)
-		o << *(i.start + idx) << " ";
-    return o;
+IteratorGroup<T>::IteratorGroup() 
+{ 
+	this.size = 0;
 }
 
+template <typename T>
+IteratorGroup<T>::IteratorGroup(Iterator start, size_t groupSize)
+{
+	this->start = start;
+	this->size = groupSize;
+}
+
+template <typename Container>
+IteratorGroup<Container>::IteratorGroup(Container &container, size_t groupSize)
+{
+	this->start = container.begin();
+	this->size = groupSize;
+}
+
+template <typename Container>
+typename Container::iterator IteratorGroup<Container>::GetLast()
+{
+	return this->start + this->size;
+};
 
 class PmergeMe
 {
@@ -88,7 +94,11 @@ private:
 	};
 
 public:
+
+	PmergeMe();
 	PmergeMe(char **args, int argc);
+	PmergeMe( const PmergeMe& src );
+	PmergeMe& operator=( const PmergeMe& other );
 	~PmergeMe();
 
 	void Sort();
@@ -144,7 +154,7 @@ void IteratorGroup<T>::SwapIteratorGroup(IteratorGroup &first, IteratorGroup &se
 }
 
 template <typename T>
-inline void IteratorGroup<T>::FillVectorOfGroup(IteratorGroup &cont,  std::vector<IteratorGroup<T> > &toFill , size_t groupsSize)
+inline void IteratorGroup<T>::FillVectorOfGroup(IteratorGroup &cont, std::vector<IteratorGroup<T> > &toFill, size_t groupsSize)
 {
 	size_t rest = 0;
 	while (rest <= cont.size)
@@ -155,7 +165,7 @@ inline void IteratorGroup<T>::FillVectorOfGroup(IteratorGroup &cont,  std::vecto
 }
 
 template <typename T>
-inline void IteratorGroup<T>::FillDequeOfGroup(IteratorGroup &cont,  std::deque<IteratorGroup<T> > &toFill , size_t groupsSize)
+inline void IteratorGroup<T>::FillDequeOfGroup(IteratorGroup &cont, std::deque<IteratorGroup<T> > &toFill, size_t groupsSize)
 {
 	size_t rest = 0;
 	while (rest <= cont.size)
@@ -163,14 +173,4 @@ inline void IteratorGroup<T>::FillDequeOfGroup(IteratorGroup &cont,  std::deque<
 		toFill.push_back(IteratorGroup<T>(cont.start + rest, groupsSize - 1));
 		rest += groupsSize;
 	}
-}
-
-template <typename Container>
-inline void IteratorGroup<Container>::VectorToGroup(IteratorGroup<Container> &con, std::vector<IteratorGroup<Container> > &toCopy)
-{
-	std::vector<unsigned int>tmp;
-	for (size_t i = 0; i < toCopy.size(); i++)
-		tmp.insert(tmp.end(), toCopy[i].start, toCopy[i].start + (toCopy[i].size + 1));
-	con.start = tmp.begin();
-	con.size = tmp.size() - 1;
 }

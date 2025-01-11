@@ -16,6 +16,11 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
 BitcoinExchange::BitcoinExchange(char *filename)
 {
 	InitMultiMap();
+	if (database.size() == 0)
+	{
+		std::cerr << "Failed to get any data from the database(possible empty file)." << std::endl;
+		return;
+	}
 	SearchExchangeValue(filename);
 }
 
@@ -100,13 +105,9 @@ void BitcoinExchange::GetExchange(const std::string& line , const size_t sepPos)
 	try
 	{
 		if (value < 0)
-		{
 			throw std::runtime_error("Error: not a positive number.");
-		}
 		else if (value > 1000)
-		{
 			throw std::runtime_error("Error: too large a number.");
-		}
 		else
 		{
 			std::multimap<Date, float>::iterator it = database.lower_bound(date);
@@ -122,8 +123,7 @@ void BitcoinExchange::GetExchange(const std::string& line , const size_t sepPos)
 				std::cout << date << " => " << value << " = " << value * it->second << std::endl;
 		}
 	}
-	catch (const std::runtime_error &e)
-	{
+	catch (const std::runtime_error &e) {
 		std::cout << e.what() << std::endl;
 	}
 }

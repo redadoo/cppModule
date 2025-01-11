@@ -14,12 +14,30 @@ const unsigned long long PmergeMe::jacobsthal_diff[] = {
 	1537228672809129216u, 3074457345618258432u, 6148914691236516864u
 };
 
+PmergeMe::PmergeMe() {}
+
 PmergeMe::PmergeMe(char **args, int argc)
 {
 	FillContainers(args, argc);
 }
 
+PmergeMe::PmergeMe(const PmergeMe& src)
+{
+	this->vect = src.vect;
+	this->deq = src.deq;
+}
+
 PmergeMe::~PmergeMe() {}
+
+PmergeMe& PmergeMe::operator=(const PmergeMe &other)
+{
+	if (this != &other)
+	{
+		this->vect = other.vect;
+		this->deq = other.deq;
+	}
+	return *this;
+}
 
 void PmergeMe::FillContainers(char **args, int argc)
 {
@@ -38,26 +56,54 @@ void PmergeMe::FillContainers(char **args, int argc)
 	}
 }
 
+int PmergeMe::StringToInt(const std::string &str) const
+{
+	for (size_t i = 0; i < str.size(); ++i)
+	{
+		if (!isdigit(str[i]))
+			throw NotDigitFound();
+	}
+
+	int number;
+	std::istringstream ss(str);
+	ss >> number;
+
+	if (ss.fail())
+		throw std::runtime_error("Invalid string to convert to int");
+	if (number < 0)
+		throw FoundNegativeNumber();
+
+	return number;
+}
+
 void PmergeMe::Sort()
 {
 	std::cout << "before: ";
 	PrintVector();
-	std::clock_t startVector1 = std::clock();
-	SortDeque();
-	std::clock_t endVector1 = std::clock();
 
-	std::clock_t startVector2 = std::clock();
+	std::clock_t startTimeVector = std::clock();
+	SortDeque();
+	std::clock_t endTimeVector = std::clock();
+
+	std::clock_t startTimeDeque = std::clock();
 	SortVector();
-	std::clock_t endVector2 = std::clock();
+	std::clock_t endTimeDeque = std::clock();
 	
-	double vectorTime1 = 1000000.0 * (endVector1 - startVector1) / CLOCKS_PER_SEC;
-	double vectorTime2 = 1000000.0 * (endVector2 - startVector2) / CLOCKS_PER_SEC;
+	double vectorTime = 1000000 * (endTimeVector - startTimeVector) / CLOCKS_PER_SEC;
+	double dequeTime = 1000000 * (endTimeDeque - startTimeDeque) / CLOCKS_PER_SEC;
 	
 	std::cout << "after: ";
 	PrintVector();
 	
-	std::cout << "\n\nTime taken by fordJohnson sort (std::deque): " << vectorTime1 << " microseconds\n";
-	std::cout << "Time taken by fordJohnson sort (std::vector): " << vectorTime2 << " microseconds\n";
+	std::cout << "\n\nTime taken by fordJohnson sort (std::deque): " << vectorTime << " microseconds\n";
+	std::cout << "Time taken by fordJohnson sort (std::vector): " << dequeTime << " microseconds\n";
+}
+
+void PmergeMe::PrintDeque() const
+{
+	for (size_t i = 0; i < deq.size(); i++)
+		std::cout << deq[i] << " ";
+	std::cout << std::endl;
 }
 
 void PmergeMe::SortDeque()
@@ -70,16 +116,11 @@ void PmergeMe::SortDeque()
 		oddSize = SortDequePairs(pairSize);
 		pairSize *= 2;
 	}
+	
 	if (deq.size() == 2)
 		return;
-	MergeInsertionDeque(pairSize, oddSize);
-}
 
-void PmergeMe::PrintDeque() const
-{
-	for (size_t i = 0; i < deq.size(); i++)
-		std::cout << deq[i] << " ";
-	std::cout << std::endl;
+	MergeInsertionDeque(pairSize, oddSize);
 }
 
 int PmergeMe::SortDequePairs(int pairSize)
@@ -122,8 +163,11 @@ void PmergeMe::MergeInsertionDeque(int pairSize, int oddSize)
 
 	IteratorGroup<deque> remained(deq.begin() + ((deq.size()) - oddSize), oddSize - 1);
 	IteratorGroup<deque> tmp(deq.begin(), (deq.size() - 1) - oddSize);
+
 	pairSize /= 2;
+	
 	std::deque<unsigned int>tmp2;
+	
 	while (pairSize > 0)
 	{
 		std::deque<IteratorGroup<deque> > main;
@@ -218,6 +262,13 @@ void PmergeMe::MergeInsertionDeque(int pairSize, int oddSize)
 	}
 }
 
+void PmergeMe::PrintVector() const
+{
+	for (size_t i = 0; i < vect.size(); i++)
+		std::cout << vect[i] << " ";
+	std::cout << std::endl;
+}
+
 void PmergeMe::SortVector()
 {
 	int pairSize = 1;
@@ -228,17 +279,11 @@ void PmergeMe::SortVector()
 		oddSize = SortVectorPairs(pairSize);
 		pairSize *= 2;
 	}
+
 	if (vect.size() == 2)
 		return;
 	
 	MergeInsertionVector(pairSize, oddSize);
-}
-
-void PmergeMe::PrintVector() const
-{
-	for (size_t i = 0; i < vect.size(); i++)
-		std::cout << vect[i] << " ";
-	std::cout << std::endl;
 }
 
 int PmergeMe::SortVectorPairs(int pairSize)
@@ -281,8 +326,11 @@ void PmergeMe::MergeInsertionVector(int pairSize, int oddSize)
 
 	IteratorGroup<vector> remained(vect.begin() + ((vect.size()) - oddSize), oddSize - 1);
 	IteratorGroup<vector> tmp(vect.begin(), (vect.size() - 1) - oddSize);
+
 	pairSize /= 2;
+	
 	std::vector<unsigned int>tmp2;
+	
 	while (pairSize > 0)
 	{
 		std::vector<IteratorGroup<vector> > main;
@@ -380,24 +428,4 @@ void PmergeMe::MergeInsertionVector(int pairSize, int oddSize)
 		tmp.size = vect.size() - 1;
 		pairSize /= 2;
 	}
-}
-
-int PmergeMe::StringToInt(const std::string &str) const
-{
-	for (size_t i = 0; i < str.size(); ++i)
-	{
-		if (!isdigit(str[i]))
-			throw NotDigitFound();
-	}
-
-	int number;
-	std::istringstream ss(str);
-	ss >> number;
-
-	if (ss.fail())
-		throw std::runtime_error("Invalid string to convert to int");
-	if (number < 0)
-		throw FoundNegativeNumber();
-
-	return number;
 }

@@ -50,10 +50,11 @@ play: re
 clean:
 	@$(RM) $(OBJDIR) $(OBJ)
 
-leaks:
-	@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME) input.txt
+leaks: re
+	@valgrind --track-origins=yes --leak-check=full --show-leak-kinds=all --log-file=leaks.txt ./$(NAME) input.txt
 
 fclean: clean
 	@$(RM) $(NAME)
+	@$(RM) leaks.txt
 
 re: fclean all

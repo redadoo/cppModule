@@ -1,5 +1,24 @@
 #include "RPN.hpp"
 
+RPN::RPN(const std::string &notation)
+{
+	Resolve(notation);
+}
+
+RPN::RPN(const RPN &src)
+{
+	this->result = src.result;
+}
+
+RPN &RPN::operator=(const RPN &other)
+{
+	if (this != &other)
+		this->result = other.result;
+	return *this;
+}
+
+RPN::~RPN() {}
+
 bool RPN::CheckError(const std::string& str)
 {
 	if (str.length() == 1)
@@ -21,7 +40,7 @@ bool RPN::Resolve(const std::string& notation)
 	{
 		if (!CheckError(token) && token.length() > 1) 
 		{
-			std::cerr << "Error" << std::endl;
+			std::cerr << "Error with token: " << token << std::endl;
 			return false;
 		}
 
@@ -31,7 +50,7 @@ bool RPN::Resolve(const std::string& notation)
 		{
 			if (stack.size() < 2) 
 			{
-				std::cerr << "Error" << std::endl;
+				std::cerr << "Error: stak size < 2" << std::endl;
 				return false;
 			}
 
@@ -77,22 +96,3 @@ int RPN::StringToInt(const std::string &str) {
 	iss >> num;
 	return num;
 }
-
-RPN::RPN(const std::string &notation)
-{
-	Resolve(notation);
-}
-
-RPN::RPN(const RPN &src)
-{
-	this->result = src.result;
-}
-
-RPN &RPN::operator=(const RPN &other)
-{
-	if (this != &other)
-		this->result = other.result;
-	return *this;
-}
-
-RPN::~RPN() {}
