@@ -1,3 +1,10 @@
+# cppModule
+
+![GitHub repo size](https://img.shields.io/github/repo-size/redadoo/cppModule)
+![GitHub contributors](https://img.shields.io/github/contributors/redadoo/cppModule)
+![GitHub stars](https://img.shields.io/github/stars/redadoo/cppModule?style=social)
+![GitHub forks](https://img.shields.io/github/forks/redadoo/cppModule?style=social)
+
 ## Description
 
 The goal of these modules is to introduce to Object-Oriented Programming.
